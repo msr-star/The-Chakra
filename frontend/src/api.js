@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://chakra-backend.onrender.com/api';
+const API_URL = 'https://ludie-unstabilized-bernice.ngrok-free.dev/api';
 
 const api = axios.create({
     baseURL: API_URL,
