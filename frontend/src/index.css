@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #090916;
+  --color-accentLight: #00E5FF;
+  --color-accentWarm: #9D4EDD;
+  --font-sans: 'Inter', sans-serif;
+  --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: white;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  html.light-mode body {
+    /* Laboratory Light overrides */
+    --color-background: #f0fdfa;
+    --color-accentLight: #0d9488;
+    --color-accentWarm: #0f766e;
+    background-color: var(--color-background);
+    color: #0f172a;
+  }
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  backdrop-filter: blur(24px);
+  background-color: rgb(255 255 255 / 0.05);
+  border: 1px solid rgb(255 255 255 / 0.1);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+html.light-mode .glass-panel {
+  background-color: rgb(0 0 0 / 0.05);
+  border: 1px solid rgb(0 0 0 / 0.1);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+/* Custom Scrollbar for aesthetic */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #22D3EE;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #F59E0B;
+}
+
+/* Custom cursor reset just in case */
+* {
+  cursor: default;
+}
