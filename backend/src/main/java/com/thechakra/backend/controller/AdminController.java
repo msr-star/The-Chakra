@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,6 +27,7 @@ public class AdminController {
         private final QuestionRepository questionRepository;
         private final OptionRepository optionRepository;
         private final UserRepository userRepository;
+        private final AssessmentResultRepository assessmentResultRepository;
         private final VerificationTokenRepository verificationTokenRepository;
         private final MentorTaskRepository mentorTaskRepository;
         private final SystemAuditService systemAuditService;
@@ -93,9 +95,15 @@ public class AdminController {
         }
 
         @DeleteMapping("/students/{userId}")
+        @Transactional
         public ResponseEntity<Void> deleteStudent(
                         @AuthenticationPrincipal CustomUserDetails admin,
                         @PathVariable UUID userId) {
+                userRepository.findById(userId).ifPresent(user -> {
+                        verificationTokenRepository.deleteByEmail(user.getEmail());
+                });
+                assessmentResultRepository.deleteByUserId(userId);
+                mentorTaskRepository.deleteByStudentId(userId);
                 userRepository.deleteById(userId);
                 systemAuditService.logAction("ADMIN_DELETE_STUDENT", "Deleted student user: " + userId,
                                 admin.getUsername(), "User:" + userId);

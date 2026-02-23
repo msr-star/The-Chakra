@@ -18,4 +18,6 @@ public interface VerificationTokenRepository extends JpaRepository<VerificationT
     void deleteByExpiryDateBefore(LocalDateTime now);
 
     void deleteByEmailAndTokenType(String email, VerificationToken.TokenType tokenType);
+
+    void deleteByEmail(String email);
 }

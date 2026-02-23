@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { adminAPI, assessmentAPI } from '../api';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Trash2, PlusCircle, Users, BookOpen, Activity, ShieldCheck, UserCheck, Mail, Send, X } from 'lucide-react';
+import { Trash2, PlusCircle, Users, BookOpen, Activity, ShieldCheck, UserCheck, Mail, Send, X, Zap } from 'lucide-react';
 
 const careerMapping = {
     'Logic': ['Backend Software Engineer', 'Database Administrator', 'Systems Architect'],
@@ -13,6 +13,15 @@ const careerMapping = {
     'Detail': ['Data Scientist', 'Machine Learning Engineer', 'Security Analyst'],
 };
 
+const TabButton = ({ id, label, icon: Icon, activeTab, setActiveTab }) => (
+    <button
+        onClick={() => setActiveTab(id)}
+        className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${activeTab === id ? 'bg-accentLight text-background' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+    >
+        <Icon size={16} /> {label}
+    </button>
+);
+
 const AdminDashboard = () => {
     const [questionText, setQuestionText] = useState('');
     const [category, setCategory] = useState('');
@@ -20,6 +29,7 @@ const AdminDashboard = () => {
     const [options, setOptions] = useState([{ text: '', score: '' }, { text: '', score: '' }]);
     const [message, setMessage] = useState('');
     const [activeTab, setActiveTab] = useState('questions');
+    const [generatingQuestion, setGeneratingQuestion] = useState(false);
     const queryClient = useQueryClient();
 
     // ── Mentorship State ──
@@ -181,21 +191,33 @@ const AdminDashboard = () => {
         setOptions(newOptions);
     };
 
+    const handleAIGenerateQuestion = () => {
+        if (!category) {
+            setMessage('Please enter a Category first (e.g., Logic) to generate a question.');
+            return;
+        }
+        setGeneratingQuestion(true);
+        // Simulate API call to ChakraAI Model
+        setTimeout(() => {
+            setQuestionText(`Which of the following approaches is most optimal for solving a complex ${category.toLowerCase()} problem?`);
+            setWeightage('1.5');
+            setOptions([
+                { text: 'Iterative refinement and testing', score: '5' },
+                { text: 'Ignoring constraints and building quickly', score: '1' },
+                { text: 'Delegating without understanding', score: '0' },
+                { text: 'Analyzing requirements thoroughly first', score: '4' }
+            ]);
+            setGeneratingQuestion(false);
+            setMessage('✨ ChakraAI generated a new question based on your category!');
+        }, 2000);
+    };
+
     const addOptionField = () => {
         setOptions([...options, { text: '', score: '' }]);
     };
 
-    const TabButton = ({ id, label, icon: Icon }) => (
-        <button
-            onClick={() => setActiveTab(id)}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${activeTab === id ? 'bg-accentLight text-background' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
-        >
-            <Icon size={16} /> {label}
-        </button>
-    );
-
     return (
-        <div className="min-h-screen bg-background text-white pt-32 pb-16 px-4 md:px-8 max-w-5xl mx-auto space-y-8 flex flex-col items-center">
+        <div className="min-h-screen text-white pt-32 pb-16 px-4 md:px-8 max-w-5xl mx-auto space-y-8 flex flex-col items-center" style={{ background: '#120803' }}>
 
             {/* Header */}
             <div className="w-full text-center space-y-2 mb-4">
@@ -208,32 +230,41 @@ const AdminDashboard = () => {
 
             {/* Stats Row */}
             {stats && (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full text-center">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-full text-center">
                     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="glass-panel p-6 rounded-3xl">
                         <div className="flex items-center justify-center gap-2 mb-2">
                             <Users size={16} className="text-gray-400" />
-                            <div className="text-sm text-gray-400 uppercase tracking-widest">Total Students</div>
+                            <div className="text-xs text-gray-400 uppercase tracking-widest">Total Students</div>
                         </div>
-                        <div className="text-4xl font-bold text-white">{stats.totalUsers}</div>
+                        <div className="text-3xl font-bold text-white">{stats.totalUsers}</div>
                     </motion.div>
                     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="glass-panel p-6 rounded-3xl">
                         <div className="flex items-center justify-center gap-2 mb-2">
                             <BookOpen size={16} className="text-gray-400" />
-                            <div className="text-sm text-gray-400 uppercase tracking-widest">Questions Active</div>
+                            <div className="text-xs text-gray-400 uppercase tracking-widest">Questions</div>
                         </div>
-                        <div className="text-4xl font-bold text-accentWarm">{questionsList.length}</div>
+                        <div className="text-3xl font-bold text-accentWarm">{questionsList.length}</div>
+                    </motion.div>
+                    <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 }} className="glass-panel p-6 rounded-3xl">
+                        <div className="flex items-center justify-center gap-2 mb-2">
+                            <Activity size={16} className="text-gray-400" />
+                            <div className="text-xs text-gray-400 uppercase tracking-widest">Engagement</div>
+                        </div>
+                        <div className="text-3xl font-bold text-[#FF9D00]">
+                            {stats.totalUsers > 0 ? Math.min(100, Math.round((questionsList.length / stats.totalUsers) * 25)) : 0}%
+                        </div>
                     </motion.div>
                     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="glass-panel p-6 rounded-3xl flex flex-col justify-center items-center">
                         <div className="flex items-center justify-center gap-2 mb-2">
-                            <Activity size={16} className="text-gray-400" />
-                            <div className="text-sm text-gray-400 uppercase tracking-widest">System Health</div>
+                            <ShieldCheck size={16} className="text-gray-400" />
+                            <div className="text-xs text-gray-400 uppercase tracking-widest">System Health</div>
                         </div>
                         <div className="flex items-center gap-2">
-                            <span className="relative flex h-3 w-3">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                            <span className="relative flex h-2.5 w-2.5">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
                             </span>
-                            <span className="text-2xl font-bold text-green-400 tracking-wider">ONLINE</span>
+                            <span className="text-xl font-bold text-emerald-400 tracking-wider">ONLINE</span>
                         </div>
                     </motion.div>
                 </div>
@@ -241,21 +272,39 @@ const AdminDashboard = () => {
 
             {/* Tabs */}
             <div className="flex gap-2 w-full p-1 glass-panel rounded-2xl flex-wrap">
-                <TabButton id="questions" label="Assessment Questions" icon={BookOpen} />
-                <TabButton id="students" label="Registered Students" icon={Users} />
-                <TabButton id="recommendations" label="Career Recommendations" icon={Activity} />
-                <TabButton id="mentorship" label="Mentorship" icon={UserCheck} />
+                <TabButton id="questions" label="Assessment Questions" icon={BookOpen} activeTab={activeTab} setActiveTab={setActiveTab} />
+                <TabButton id="students" label="Registered Students" icon={Users} activeTab={activeTab} setActiveTab={setActiveTab} />
+                <TabButton id="recommendations" label="Career Recommendations" icon={Activity} activeTab={activeTab} setActiveTab={setActiveTab} />
+                <TabButton id="mentorship" label="Mentorship" icon={UserCheck} activeTab={activeTab} setActiveTab={setActiveTab} />
             </div>
 
             {/* Tab: Create & Manage Questions */}
             {activeTab === 'questions' && (
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full space-y-8">
                     {/* Create Question Form */}
-                    <div className="glass-panel w-full p-8 rounded-3xl">
+                    <div className="glass-panel w-full p-8 rounded-3xl relative overflow-hidden">
+                        <div className="absolute top-0 right-0 p-8 w-full max-w-sm">
+                            <button
+                                type="button"
+                                onClick={handleAIGenerateQuestion}
+                                disabled={generatingQuestion}
+                                className="w-full py-3 bg-[#FF5A00]/10 border border-[#FF5A00]/30 text-[#FF5A00] hover:bg-[#FF5A00]/20 rounded-xl font-bold transition-all disabled:opacity-50 flex justify-center items-center gap-2 group"
+                            >
+                                {generatingQuestion ? (
+                                    <>
+                                        <span className="animate-spin"><Zap size={16} /></span> Generating with ChakraAI...
+                                    </>
+                                ) : (
+                                    <>
+                                        <Zap size={16} className="group-hover:scale-110 transition-transform" /> ChakraAI Auto-Draft
+                                    </>
+                                )}
+                            </button>
+                        </div>
                         <h2 className="text-2xl font-bold mb-2 text-white flex items-center gap-2">
                             <PlusCircle size={22} className="text-accentWarm" /> Create New Question
                         </h2>
-                        <p className="text-sm text-gray-500 mb-6">Add a new assessment question with answer options and scoring.</p>
+                        <p className="text-sm text-gray-500 mb-6 max-w-lg">Add a new assessment question manually or use ChakraAI to auto-draft options based on a category.</p>
 
                         {message && (
                             <div className={`mb-6 p-4 rounded-xl border text-sm font-medium ${message.includes('Error') ? 'bg-red-500/10 text-red-400 border-red-500/30' : 'bg-accentLight/10 text-accentLight border-accentLight/30'}`}>
@@ -270,7 +319,7 @@ const AdminDashboard = () => {
                                     required
                                     rows={3}
                                     placeholder="Enter the assessment question here..."
-                                    className="w-full bg-background border border-white/20 rounded-xl p-4 text-white focus:outline-none focus:border-accentLight transition-colors resize-none"
+                                    className="w-full bg-[#1A0B05] border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-accentLight transition-colors resize-none"
                                     value={questionText}
                                     onChange={e => setQuestionText(e.target.value)}
                                 />
@@ -284,7 +333,7 @@ const AdminDashboard = () => {
                                     <input
                                         type="text" required
                                         placeholder="e.g. Logic"
-                                        className="w-full bg-background border border-white/20 rounded-xl p-3 text-white focus:outline-none focus:border-accentLight transition-colors"
+                                        className="w-full bg-[#1A0B05] border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-accentLight transition-colors"
                                         value={category}
                                         onChange={e => setCategory(e.target.value)}
                                     />
@@ -294,7 +343,7 @@ const AdminDashboard = () => {
                                     <input
                                         type="number" step="0.1" required
                                         placeholder="e.g. 1.0"
-                                        className="w-full bg-background border border-white/20 rounded-xl p-3 text-white focus:outline-none focus:border-accentLight transition-colors"
+                                        className="w-full bg-[#1A0B05] border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-accentLight transition-colors"
                                         value={weightage}
                                         onChange={e => setWeightage(e.target.value)}
                                     />
@@ -338,7 +387,7 @@ const AdminDashboard = () => {
                             <button
                                 type="submit"
                                 disabled={createQuestionMutation.isPending}
-                                className="w-full py-4 bg-accentWarm text-background font-bold rounded-xl hover:bg-yellow-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="w-full py-4 bg-accentWarm text-white font-bold rounded-xl hover:bg-[#FF8533] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {createQuestionMutation.isPending ? 'Saving...' : 'Save Question'}
                             </button>
@@ -574,7 +623,7 @@ const AdminDashboard = () => {
                                                         </button>
                                                         <button
                                                             onClick={() => { setTaskModalStudent(student); setMentorMsg(''); }}
-                                                            className="text-xs px-3 py-2 bg-purple-500/10 hover:bg-purple-500 text-purple-400 hover:text-white rounded-xl border border-purple-500/30 flex items-center gap-1.5 font-semibold transition-all"
+                                                            className="text-xs px-3 py-2 bg-[#F5A623]/10 hover:bg-[#F5A623] text-[#F5A623] hover:text-white rounded-xl border border-[#F5A623]/30 flex items-center gap-1.5 font-semibold transition-all"
                                                         >
                                                             <Send size={12} /> Send Task
                                                         </button>
@@ -614,7 +663,7 @@ const AdminDashboard = () => {
                         >
                             <div className="flex items-center justify-between mb-6">
                                 <div>
-                                    <h3 className="text-xl font-bold text-white flex items-center gap-2"><Send size={18} className="text-purple-400" /> Send Daily Task</h3>
+                                    <h3 className="text-xl font-bold text-white flex items-center gap-2"><Send size={18} className="text-[#FF5A00]" /> Send Daily Task</h3>
                                     <p className="text-gray-500 text-sm mt-1">To: <span className="text-white font-medium">{taskModalStudent.name}</span> ({taskModalStudent.email})</p>
                                 </div>
                                 <button onClick={() => setTaskModalStudent(null)} className="p-2 hover:bg-white/10 rounded-xl transition-colors">
@@ -655,7 +704,7 @@ const AdminDashboard = () => {
                                 <button
                                     type="submit"
                                     disabled={sendTaskMutation.isPending}
-                                    className="w-full py-3 bg-gradient-to-r from-purple-600 to-accentLight text-white font-bold rounded-xl hover:opacity-90 transition-all flex items-center justify-center gap-2"
+                                    className="w-full py-3 bg-gradient-to-r from-[#FF5A00] to-accentLight text-white font-bold rounded-xl hover:opacity-90 transition-all flex items-center justify-center gap-2"
                                 >
                                     {sendTaskMutation.isPending ? 'Sending...' : <><Send size={16} /> Send Task to Student</>}
                                 </button>

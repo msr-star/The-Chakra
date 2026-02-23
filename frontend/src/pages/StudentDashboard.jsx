@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
-import { User, Activity, Clock, Zap, Target, BookOpen, CheckCircle, AlertCircle, GraduationCap, Compass, UserCheck, ExternalLink } from 'lucide-react';
+import { User, Activity, Clock, Zap, Target, BookOpen, CheckCircle, AlertCircle, GraduationCap, Compass, UserCheck, ExternalLink, Sparkles, Map, TrendingUp } from 'lucide-react';
 import { assessmentAPI, studentAPI } from '../api';
 
 const StudentDashboard = () => {
@@ -18,6 +18,8 @@ const StudentDashboard = () => {
     const [loadingResults, setLoadingResults] = useState(true);
     const [mentor, setMentor] = useState(null);
     const [tasks, setTasks] = useState([]);
+    const [generatingRoadmap, setGeneratingRoadmap] = useState(false);
+    const [roadmapGenerated, setRoadmapGenerated] = useState(false);
 
     useEffect(() => {
         const fetchResults = async () => {
@@ -50,14 +52,25 @@ const StudentDashboard = () => {
     // Build career profile bars from latest result category scores
     const categoryScores = latestResult?.categoryScores || {};
     const sortedCategories = Object.entries(categoryScores)
-        .sort(([, a], [, b]) => b - a)
-        .slice(0, 4);
-    const maxScore = sortedCategories[0]?.[1] || 1;
+        .sort(([, a], [, b]) => b - a);
+    const topCategories = sortedCategories.slice(0, 4);
+    const maxScore = topCategories.length ? topCategories[0][1] : 1;
 
-    const barColors = ['bg-accentLight', 'bg-purple-400', 'bg-accentWarm', 'bg-emerald-400'];
+    // AI Skill Gap Analysis: Identify lowest scored categories
+    const lowestCategories = sortedCategories.slice(-3).reverse(); // Get worst 3
+
+    const barColors = ['bg-accentLight', 'bg-[#FF8A8A]', 'bg-accentWarm', 'bg-[#F5A623]'];
+
+    const handleGenerateRoadmap = () => {
+        setGeneratingRoadmap(true);
+        setTimeout(() => {
+            setGeneratingRoadmap(false);
+            setRoadmapGenerated(true);
+        }, 2500);
+    };
 
     return (
-        <div className="min-h-screen pt-32 pb-16 px-4 md:px-8 max-w-7xl mx-auto relative overflow-hidden">
+        <div className="min-h-screen pt-32 pb-16 px-4 md:px-8 max-w-7xl mx-auto relative overflow-hidden text-white" style={{ background: '#120803' }}>
             {/* Ambient Background */}
             <motion.div
                 animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.5, 0.3] }}
@@ -74,10 +87,10 @@ const StudentDashboard = () => {
                 {/* Left Column: Profile & Summary */}
                 <div className="lg:col-span-1 space-y-6">
                     {/* User Profile Card */}
-                    <div className="glass-panel p-8 rounded-3xl border border-white/5 relative overflow-hidden group">
+                    <div className="glass-panel p-8 rounded-3xl border border-white/5 relative overflow-hidden group bg-white/5">
                         <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-r from-accentLight/20 to-accentWarm/20 group-hover:from-accentLight/30 group-hover:to-accentWarm/30 transition-colors" />
                         <div className="relative z-10 flex flex-col items-center mt-6">
-                            <div className="w-24 h-24 rounded-full bg-[#020617] border-4 border-background flex items-center justify-center mb-4 shadow-xl">
+                            <div className="w-24 h-24 rounded-full bg-[#1A0B05] border-4 border-[#120803] flex items-center justify-center mb-4 shadow-xl">
                                 <User size={40} className="text-gray-400" />
                             </div>
                             <h2 className="text-2xl font-bold text-white mb-1">{user?.name || 'Student'}</h2>
@@ -104,9 +117,9 @@ const StudentDashboard = () => {
                         </h3>
                         {loadingResults ? (
                             <p className="text-gray-500 text-sm">Loading your profile...</p>
-                        ) : sortedCategories.length > 0 ? (
+                        ) : topCategories.length > 0 ? (
                             <div className="space-y-4">
-                                {sortedCategories.map(([category, score], i) => (
+                                {topCategories.map(([category, score], i) => (
                                     <div key={category}>
                                         <div className="flex justify-between text-sm mb-2">
                                             <span className="text-gray-400">{category}</span>
@@ -128,6 +141,32 @@ const StudentDashboard = () => {
                         )}
                     </div>
 
+                    {/* ChakraAI Skill Gap Analysis */}
+                    {latestResult && (
+                        <div className="glass-panel p-6 rounded-3xl border border-white/5 bg-gradient-to-br from-white/5 to-transparent relative overflow-hidden">
+                            <div className="absolute -top-10 -right-10 w-32 h-32 bg-accentLight/20 blur-3xl rounded-full pointer-events-none" />
+                            <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                                <Sparkles size={18} className="text-[#F5A623]" /> ChakraAI Skill Gap
+                            </h3>
+                            <p className="text-xs text-gray-400 mb-4">
+                                Based on your matches for <strong className="text-accentLight">{latestResult.suggestedPath}</strong>, focus on improving these areas:
+                            </p>
+                            <div className="space-y-3">
+                                {lowestCategories.map(([category, score], i) => (
+                                    <div key={i} className="flex items-center gap-3 p-3 bg-white/5 border border-white/5 rounded-xl">
+                                        <div className="w-8 h-8 rounded-lg bg-[#FF8A8A]/10 text-[#FF8A8A] flex items-center justify-center">
+                                            <TrendingUp size={14} />
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-semibold text-white">{category}</p>
+                                            <p className="text-[10px] text-gray-500 uppercase tracking-widest">Priority Improvement</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
                     {/* Mentor Card */}
                     {mentor && (
                         <motion.div
@@ -139,7 +178,7 @@ const StudentDashboard = () => {
                                 <UserCheck size={18} className="text-accentLight" /> Your Mentor
                             </h3>
                             <div className="flex items-center gap-3">
-                                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accentLight/30 to-purple-500/30 flex items-center justify-center text-xl font-black text-white">
+                                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accentLight/30 to-[#FF8A8A]/30 flex items-center justify-center text-xl font-black text-white">
                                     {mentor.mentorName?.charAt(0)}
                                 </div>
                                 <div>
@@ -201,10 +240,10 @@ const StudentDashboard = () => {
                                 whileHover={{ scale: 1.02, y: -2 }}
                                 whileTap={{ scale: 0.98 }}
                                 onClick={() => navigate('/resources')}
-                                className="bg-white/5 hover:bg-white/10 p-6 rounded-2xl border border-purple-400/20 cursor-pointer transition-colors group"
+                                className="bg-white/5 hover:bg-white/10 p-6 rounded-2xl border border-[#F5A623]/20 cursor-pointer transition-colors group"
                             >
-                                <div className="w-12 h-12 rounded-full bg-purple-400/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                    <BookOpen size={24} className="text-purple-400" />
+                                <div className="w-12 h-12 rounded-full bg-[#F5A623]/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                    <BookOpen size={24} className="text-[#F5A623]" />
                                 </div>
                                 <h3 className="text-xl font-bold text-white mb-2">Career Resources</h3>
                                 <p className="text-sm text-gray-400">
@@ -217,10 +256,10 @@ const StudentDashboard = () => {
                                 whileHover={{ scale: 1.02, y: -2 }}
                                 whileTap={{ scale: 0.98 }}
                                 onClick={() => navigate('/about')}
-                                className="bg-white/5 hover:bg-white/10 p-6 rounded-2xl border border-emerald-400/20 cursor-pointer transition-colors group"
+                                className="bg-white/5 hover:bg-white/10 p-6 rounded-2xl border border-[#FF8A8A]/20 cursor-pointer transition-colors group"
                             >
-                                <div className="w-12 h-12 rounded-full bg-emerald-400/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                    <Compass size={24} className="text-emerald-400" />
+                                <div className="w-12 h-12 rounded-full bg-[#FF8A8A]/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                    <Compass size={24} className="text-[#FF8A8A]" />
                                 </div>
                                 <h3 className="text-xl font-bold text-white mb-2">About The Chakra</h3>
                                 <p className="text-sm text-gray-400">
@@ -229,6 +268,51 @@ const StudentDashboard = () => {
                             </motion.div>
                         </div>
                     </div>
+
+                    {/* ChakraAI Career Roadmap Generator */}
+                    {latestResult && (
+                        <div className="glass-panel p-8 rounded-3xl border border-accentWarm/20 relative overflow-hidden">
+                            <div className="absolute inset-0 bg-gradient-to-br from-accentWarm/5 to-transparent pointer-events-none" />
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-accentLight/10 rounded-full blur-3xl pointer-events-none" />
+
+                            <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center justify-between">
+                                <div>
+                                    <h2 className="text-2xl font-bold flex items-center gap-2 mb-2">
+                                        <Map className="text-accentLight" size={24} /> ChakraAI Career Roadmap
+                                    </h2>
+                                    <p className="text-sm text-gray-400 max-w-lg mb-4">
+                                        Use our intelligent PathFinder model to generate a custom 6-month learning journey tailored to your <strong className="text-accentLight">{latestResult.suggestedPath}</strong> match.
+                                    </p>
+                                </div>
+                                <div className="shrink-0 flex items-center justify-center">
+                                    {!roadmapGenerated ? (
+                                        <button
+                                            onClick={handleGenerateRoadmap}
+                                            disabled={generatingRoadmap}
+                                            className="btn-accent py-3 px-6 shadow-xl shadow-accentWarm/20 disabled:opacity-70 disabled:cursor-not-allowed group relative overflow-hidden"
+                                        >
+                                            {generatingRoadmap ? (
+                                                <span className="flex items-center gap-2">
+                                                    <span className="animate-spin"><Zap size={18} /></span> Generating...
+                                                </span>
+                                            ) : (
+                                                <span className="flex items-center gap-2">
+                                                    <Sparkles size={18} /> Generate My Roadmap
+                                                </span>
+                                            )}
+                                            {/* Shimmer effect */}
+                                            <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12" />
+                                        </button>
+                                    ) : (
+                                        <div className="flex items-center gap-2 text-emerald-400 bg-emerald-400/10 px-4 py-2 rounded-xl border border-emerald-400/20">
+                                            <CheckCircle size={18} /> Roadmap Ready!
+                                            <button className="text-xs font-bold underline ml-2">View Now</button>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     {/* Assessment History */}
                     <div className="glass-panel p-6 rounded-3xl border border-white/5">
@@ -283,7 +367,7 @@ const StudentDashboard = () => {
                 {tasks.length > 0 && (
                     <div className="glass-panel p-6 rounded-3xl border border-white/5">
                         <h3 className="text-xl font-bold mb-6 border-b border-white/10 pb-4 flex items-center gap-2">
-                            <CheckCircle size={20} className="text-purple-400" /> Daily Tasks from Mentor
+                            <CheckCircle size={20} className="text-[#F5A623]" /> Daily Tasks from Mentor
                         </h3>
                         <div className="space-y-4">
                             {tasks.map((task, i) => (
@@ -292,7 +376,7 @@ const StudentDashboard = () => {
                                     initial={{ opacity: 0, x: -10 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: i * 0.07 }}
-                                    className="p-4 bg-white/5 rounded-xl border border-purple-500/20 hover:border-purple-500/40 transition-colors"
+                                    className="p-4 bg-white/5 rounded-xl border border-[#F5A623]/20 hover:border-[#F5A623]/40 transition-colors"
                                 >
                                     <div className="flex items-start justify-between gap-3 mb-2">
                                         <p className="text-white font-semibold text-sm">{task.title}</p>

@@ -10,4 +10,6 @@ import java.util.UUID;
 @Repository
 public interface AssessmentResultRepository extends JpaRepository<AssessmentResult, Long> {
     List<AssessmentResult> findByUserIdOrderByTimestampDesc(UUID userId);
+
+    void deleteByUserId(UUID userId);
 }

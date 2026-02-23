@@ -57,24 +57,22 @@ const AnimatedRoutes = () => {
 };
 
 import Footer from './components/Footer';
-import { ThemeProvider } from './components/ThemeProvider';
 
 function App() {
   return (
-    <ThemeProvider>
-      <QueryClientProvider client={queryClient}>
-        <Router>
-          <div className="min-h-screen bg-background text-white selection:bg-accentLight selection:text-background font-sans overflow-x-hidden flex flex-col">
-            <CustomCursor />
-            <Navbar />
-            <main className="flex-grow">
-              <AnimatedRoutes />
-            </main>
-            <Footer />
-          </div>
-        </Router>
-      </QueryClientProvider>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <div className="min-h-screen text-white overflow-x-hidden flex flex-col"
+          style={{ background: '#120803', fontFamily: 'Inter, sans-serif' }}>
+          <CustomCursor />
+          <Navbar />
+          <main className="flex-grow">
+            <AnimatedRoutes />
+          </main>
+          <Footer />
+        </div>
+      </Router>
+    </QueryClientProvider>
   );
 }
 

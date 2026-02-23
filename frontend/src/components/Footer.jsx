@@ -1,128 +1,164 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Linkedin, Mail, Shield, Zap, Sparkles } from 'lucide-react';
+import { Zap, Linkedin, Mail, ArrowUpRight, Twitter, Github } from 'lucide-react';
 
 const Footer = () => {
-    const location = useLocation(); // re-reads localStorage fresh on every route change
-
-    // Determine auth state from localStorage
+    const location = useLocation();
     const token = localStorage.getItem('token');
-    const user = (() => {
-        try { return JSON.parse(localStorage.getItem('user')); } catch { return null; }
-    })();
-
+    const user = (() => { try { return JSON.parse(localStorage.getItem('user')); } catch { return null; } })();
     const isLoggedIn = !!token && !!user;
     const isAdmin = isLoggedIn && user?.role === 'ADMIN';
     const isStudent = isLoggedIn && user?.role === 'STUDENT';
 
-    return (
-        <footer className="bg-[#020617] border-t border-white/10 pt-16 pb-8 relative overflow-hidden z-20">
-            {/* Ambient Background Gradient */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--color-accentLight)_0%,_transparent_40%)] opacity-5 pointer-events-none" />
+    const platformLinks = [
+        { to: '/assessment', label: 'Career Assessment' },
+        { to: '/resources', label: 'Career Resources' },
+        ...(isStudent ? [{ to: '/student', label: 'My Dashboard' }] : []),
+        ...(isAdmin ? [{ to: '/admin', label: 'Admin Dashboard' }] : []),
+        ...(!isLoggedIn ? [
+            { to: '/login', label: 'Sign In' },
+            { to: '/register', label: 'Register Free' },
+        ] : []),
+    ];
 
-            <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-                    {/* Brand Section */}
-                    <div className="col-span-1 md:col-span-1">
-                        <Link to="/" className="text-2xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-accentLight to-accentWarm mb-4 inline-block">
-                            THE CHAKRA
+    const companyLinks = [
+        { to: '/about', label: 'About Us' },
+        { to: '/about#team', label: 'Our Team' },
+        { to: '/about#story', label: 'Our Story' },
+    ];
+
+    return (
+        <footer className="relative overflow-hidden z-20"
+            style={{ background: 'linear-gradient(180deg, #05091A 0%, #030610 100%)' }}>
+
+            {/* Top gradient border */}
+            <div className="divider-gradient" />
+
+            {/* Ambient glow */}
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full pointer-events-none"
+                style={{
+                    background: 'radial-gradient(ellipse, rgba(124,58,255,0.08) 0%, transparent 70%)',
+                    filter: 'blur(40px)',
+                }} />
+
+            <div className="max-w-7xl mx-auto px-6 md:px-10 pt-16 pb-8 relative z-10">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-14">
+
+                    {/* Brand */}
+                    <div className="md:col-span-4">
+                        <Link to="/" className="flex items-center gap-2.5 mb-5 group w-fit">
+                            <div className="w-9 h-9 rounded-xl flex items-center justify-center"
+                                style={{ background: 'linear-gradient(135deg, #7C3AFF, #00D4C8)' }}>
+                                <Zap size={17} className="text-white" fill="white" />
+                            </div>
+                            <span className="text-xl font-bold"
+                                style={{
+                                    fontFamily: 'Outfit, sans-serif',
+                                    background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.65) 100%)',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent',
+                                    backgroundClip: 'text',
+                                }}>
+                                The Chakra
+                            </span>
                         </Link>
-                        <p className="text-gray-400 text-sm mb-6 leading-relaxed">
-                            A web-based career assessment platform helping students discover their strengths, personality traits, and ideal career paths.
+
+                        <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-xs">
+                            A career assessment platform helping students discover their strengths, personality traits, and ideal career paths through intelligent assessments.
                         </p>
-                        <div className="flex gap-4">
-                            <a
-                                href="https://www.linkedin.com/in/m-sai-sri-rohit-aa698a367/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="p-2 rounded-full bg-white/5 hover:bg-[#0A66C2]/20 text-gray-400 hover:text-[#0A66C2] transition-colors border border-white/5 hover:border-[#0A66C2]/30"
-                            >
-                                <Linkedin size={18} />
+
+                        {/* Social icons */}
+                        <div className="flex gap-3">
+                            <a href="https://www.linkedin.com/in/m-sai-sri-rohit-aa698a367/"
+                                target="_blank" rel="noopener noreferrer"
+                                className="w-9 h-9 rounded-xl flex items-center justify-center text-gray-400 hover:text-white border border-white/8 hover:border-violet-500/40 hover:bg-violet-500/10 transition-all duration-200">
+                                <Linkedin size={16} />
+                            </a>
+                            <a href="mailto:msrohit2007@gmail.com"
+                                className="w-9 h-9 rounded-xl flex items-center justify-center text-gray-400 hover:text-white border border-white/8 hover:border-cyan-500/40 hover:bg-cyan-500/10 transition-all duration-200">
+                                <Mail size={16} />
                             </a>
                         </div>
                     </div>
 
-                    {/* Navigation - Platform */}
-                    <div>
-                        <h4 className="text-white font-semibold mb-6 flex items-center gap-2">
-                            <Zap size={16} className="text-accentWarm" /> Platform
+                    {/* Platform Links */}
+                    <div className="md:col-span-3">
+                        <h4 className="text-white font-semibold mb-5 text-sm tracking-wider uppercase"
+                            style={{ fontFamily: 'Outfit, sans-serif' }}>
+                            Platform
                         </h4>
-                        <ul className="space-y-4">
-                            <li><Link to="/assessment" className="text-sm text-gray-400 hover:text-white transition-colors">Career Assessment</Link></li>
-                            <li><Link to="/resources" className="text-sm text-gray-400 hover:text-white transition-colors">Career Resources</Link></li>
-
-                            {/* When logged in as Student */}
-                            {isStudent && (
-                                <li><Link to="/student" className="text-sm text-gray-400 hover:text-white transition-colors">My Dashboard</Link></li>
-                            )}
-
-                            {/* When logged in as Admin */}
-                            {isAdmin && (
-                                <li><Link to="/admin" className="text-sm text-gray-400 hover:text-white transition-colors">Admin Dashboard</Link></li>
-                            )}
-
-                            {/* When NOT logged in */}
-                            {!isLoggedIn && (
-                                <>
-                                    <li><Link to="/student" className="text-sm text-gray-400 hover:text-white transition-colors">Student Dashboard</Link></li>
-                                    <li><Link to="/login" className="text-sm text-gray-400 hover:text-white transition-colors">Sign In</Link></li>
-                                    <li><Link to="/register" className="text-sm text-gray-400 hover:text-white transition-colors">Register</Link></li>
-                                </>
-                            )}
+                        <ul className="space-y-3">
+                            {platformLinks.map(({ to, label }) => (
+                                <li key={to}>
+                                    <Link to={to}
+                                        className="text-sm text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-1 group">
+                                        {label}
+                                        <ArrowUpRight size={12} className="opacity-0 group-hover:opacity-100 transition-opacity -translate-y-px" />
+                                    </Link>
+                                </li>
+                            ))}
                         </ul>
                     </div>
 
-                    {/* Navigation - Company */}
-                    <div>
-                        <h4 className="text-white font-semibold mb-6 flex items-center gap-2">
-                            <Sparkles size={16} className="text-accentLight" /> Company
+                    {/* Company Links */}
+                    <div className="md:col-span-3">
+                        <h4 className="text-white font-semibold mb-5 text-sm tracking-wider uppercase"
+                            style={{ fontFamily: 'Outfit, sans-serif' }}>
+                            Company
                         </h4>
-                        <ul className="space-y-4">
-                            <li><Link to="/about" className="text-sm text-gray-400 hover:text-white transition-colors">About Us</Link></li>
-                            <li><Link to="/about#team" className="text-sm text-gray-400 hover:text-white transition-colors">Our Team</Link></li>
-                            <li><Link to="/about#story" className="text-sm text-gray-400 hover:text-white transition-colors">Our Story</Link></li>
+                        <ul className="space-y-3">
+                            {companyLinks.map(({ to, label }) => (
+                                <li key={to}>
+                                    <Link to={to}
+                                        className="text-sm text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-1 group">
+                                        {label}
+                                        <ArrowUpRight size={12} className="opacity-0 group-hover:opacity-100 transition-opacity -translate-y-px" />
+                                    </Link>
+                                </li>
+                            ))}
                             <li>
-                                <a href="mailto:msrohit2007@gmail.com" className="text-sm text-gray-400 hover:text-white transition-colors">
-                                    Contact Us
+                                <a href="mailto:msrohit2007@gmail.com"
+                                    className="text-sm text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-1 group">
+                                    Contact
+                                    <ArrowUpRight size={12} className="opacity-0 group-hover:opacity-100 transition-opacity -translate-y-px" />
                                 </a>
                             </li>
                         </ul>
                     </div>
 
-                    {/* Support */}
-                    <div>
-                        <h4 className="text-white font-semibold mb-6 flex items-center gap-2">
-                            <Shield size={16} className="text-gray-300" /> Support
+                    {/* Contact / CTA */}
+                    <div className="md:col-span-2">
+                        <h4 className="text-white font-semibold mb-5 text-sm tracking-wider uppercase"
+                            style={{ fontFamily: 'Outfit, sans-serif' }}>
+                            Connect
                         </h4>
-                        <ul className="space-y-4">
-                            <li>
-                                <a href="mailto:msrohit2007@gmail.com" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2">
-                                    <Mail size={14} /> msrohit2007@gmail.com
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://www.linkedin.com/in/m-sai-sri-rohit-aa698a367/"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2"
-                                >
-                                    <Linkedin size={14} /> LinkedIn
-                                </a>
-                            </li>
-                        </ul>
+                        <div className="space-y-3">
+                            <a href="mailto:msrohit2007@gmail.com"
+                                className="text-sm text-gray-400 hover:text-white transition-colors block break-all">
+                                msrohit2007@gmail.com
+                            </a>
+                            <div className="mt-4">
+                                <Link to="/register"
+                                    className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-xl text-white transition-all"
+                                    style={{ background: 'linear-gradient(135deg, rgba(124,58,255,0.25), rgba(0,212,200,0.15))', border: '1px solid rgba(124,58,255,0.3)' }}>
+                                    Get Started Free
+                                    <ArrowUpRight size={14} />
+                                </Link>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                {/* Bottom Bar */}
-                <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-gray-500 text-xs">
+                {/* Bottom bar */}
+                <div className="divider-gradient mb-8" />
+                <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p className="text-gray-600 text-xs">
                         &copy; {new Date().getFullYear()} The Chakra Career Assessment Platform. All rights reserved.
                     </p>
-                    <div className="flex gap-6">
-                        <span className="text-xs text-gray-600">Built for FSAD-PS30</span>
-                        <span className="text-xs text-gray-600">•</span>
-                        <span className="text-xs text-gray-600">Powered by Spring Boot + React</span>
+                    <div className="flex items-center gap-4">
+                        <span className="text-xs text-gray-700">Built for FSAD-PS30</span>
+                        <span className="text-gray-700">·</span>
+                        <span className="text-xs text-gray-700">Spring Boot + React</span>
                     </div>
                 </div>
             </div>

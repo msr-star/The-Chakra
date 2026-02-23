@@ -2,8 +2,6 @@ package com.thechakra.backend.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thechakra.backend.dto.AnswerDto;
 import com.thechakra.backend.entity.AssessmentResult;
 import com.thechakra.backend.entity.Option;

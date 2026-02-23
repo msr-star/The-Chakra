@@ -9,4 +9,6 @@ public interface MentorTaskRepository extends JpaRepository<MentorTask, UUID> {
     List<MentorTask> findByStudentIdOrderByCreatedAtDesc(UUID studentId);
 
     List<MentorTask> findByAdminIdOrderByCreatedAtDesc(UUID adminId);
+
+    void deleteByStudentId(UUID studentId);
 }
