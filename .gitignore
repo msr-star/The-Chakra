@@ -1,0 +1,2 @@
+# Prevent binary deliverable archives from being committed
+/deliverable/*.tar.gz

@@ -10,6 +10,7 @@ import com.thechakra.backend.repository.VerificationTokenRepository;
 import com.thechakra.backend.security.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,12 +20,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Optional;
-import java.util.Random;
+import java.security.SecureRandom;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+
+        private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
         private final UserRepository userRepository;
         private final VerificationTokenRepository verificationTokenRepository;
@@ -35,8 +38,11 @@ public class AuthService {
         private final UserMapper userMapper;
         private final RefreshTokenService refreshTokenService;
 
+        @Value("${chakra.root-secret}")
+        private String rootSecret;
+
         private String generateOtp() {
-                return String.format("%06d", new Random().nextInt(999999));
+                return String.format("%06d", SECURE_RANDOM.nextInt(1_000_000));
         }
 
         @Transactional
@@ -46,7 +52,7 @@ public class AuthService {
 
         @Transactional
         public void generateAdminOtp(RootAdminOtpRequestDto request) {
-                if (!"CHAKRA_ADMIN_777".equals(request.getRootSecret())) {
+                if (!rootSecret.equals(request.getRootSecret())) {
                         throw new IllegalArgumentException("Invalid Root Secret");
                 }
 
