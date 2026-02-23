@@ -34,8 +34,10 @@ com\thechakra\backend\repository\RefreshTokenRepository.class
 com\thechakra\backend\entity\SystemLog$SystemLogBuilder.class
 com\thechakra\backend\dto\UserDto.class
 com\thechakra\backend\security\CustomUserDetailsService.class
+com\thechakra\backend\controller\StudentController.class
 com\thechakra\backend\dto\UserMapper.class
 com\thechakra\backend\entity\Option.class
+com\thechakra\backend\repository\MentorTaskRepository.class
 com\thechakra\backend\service\EmailService.class
 com\thechakra\backend\config\DataSeeder.class
 com\thechakra\backend\dto\ResetPasswordRequestDto.class
@@ -48,9 +50,11 @@ com\thechakra\backend\config\StringCryptoConverter.class
 com\thechakra\backend\entity\VerificationToken$TokenType.class
 com\thechakra\backend\entity\VerificationToken.class
 com\thechakra\backend\dto\AnswerDto.class
+com\thechakra\backend\entity\MentorTask.class
 com\thechakra\backend\security\SecurityConfig.class
 com\thechakra\backend\TheChakraApplication.class
 com\thechakra\backend\dto\TokenRefreshRequestDto.class
+com\thechakra\backend\entity\MentorTask$MentorTaskBuilder.class
 com\thechakra\backend\service\AssessmentService$1.class
 com\thechakra\backend\repository\UserRepository.class
 com\thechakra\backend\dto\UserMapperImpl.class
