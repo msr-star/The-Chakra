@@ -1,4 +1,5 @@
 import React from 'react';
+import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -26,7 +27,7 @@ const AnimatedRoutes = () => {
   let user = null;
   try {
     user = userStr ? JSON.parse(userStr) : null;
-  } catch (e) {
+  } catch {
     user = null;
   }
 
@@ -62,11 +63,13 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
-        <div className="min-h-screen text-white overflow-x-hidden flex flex-col"
-          style={{ background: '#120803', fontFamily: 'Inter, sans-serif' }}>
+        <div className="app-shell min-h-screen text-white overflow-x-hidden flex flex-col" style={{ fontFamily: 'Inter, sans-serif' }}>
+          <div className="app-shell__grid" />
+          <div className="app-shell__orb app-shell__orb--one" />
+          <div className="app-shell__orb app-shell__orb--two" />
           <CustomCursor />
           <Navbar />
-          <main className="flex-grow">
+          <main className="flex-grow relative z-10">
             <AnimatedRoutes />
           </main>
           <Footer />

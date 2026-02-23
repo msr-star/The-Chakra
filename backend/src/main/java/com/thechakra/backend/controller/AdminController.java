@@ -197,13 +197,5 @@ public class AdminController {
                 return ResponseEntity.ok(students);
         }
 
-        /** Student gets their own tasks from their assigned admin */
-        @GetMapping("/my-tasks")
-        public ResponseEntity<List<MentorTask>> getMyTasks(
-                        @AuthenticationPrincipal CustomUserDetails student) {
-                User studentUser = userRepository.findByEmail(student.getUsername())
-                                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-                List<MentorTask> tasks = mentorTaskRepository.findByStudentIdOrderByCreatedAtDesc(studentUser.getId());
-                return ResponseEntity.ok(tasks);
-        }
+
 }
