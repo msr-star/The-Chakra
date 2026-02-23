@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://ludie-unstabilized-bernice.ngrok-free.dev/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
 
 const api = axios.create({
     baseURL: API_URL,
@@ -37,7 +37,10 @@ api.interceptors.response.use(
     async (error) => {
         const originalRequest = error.config;
 
-        if (error.response?.status === 401 && !originalRequest._retry) {
+        const publicAuthRoutes = ['/auth/login', '/auth/register', '/auth/verify-admin-login', '/auth/forgot-password', '/auth/reset-password'];
+        const isPublicAuthRoute = originalRequest.url && publicAuthRoutes.some(route => originalRequest.url.includes(route));
+
+        if (error.response?.status === 401 && !originalRequest._retry && !isPublicAuthRoute) {
             if (isRefreshing) {
                 return new Promise(function (resolve, reject) {
                     failedQueue.push({ resolve, reject });
