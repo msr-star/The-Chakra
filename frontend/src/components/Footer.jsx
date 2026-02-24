@@ -1,9 +1,8 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Zap, Linkedin, Mail, ArrowUpRight, Twitter, Github } from 'lucide-react';
 
 const Footer = () => {
-    const location = useLocation();
     const token = localStorage.getItem('token');
     const user = (() => { try { return JSON.parse(localStorage.getItem('user')); } catch { return null; } })();
     const isLoggedIn = !!token && !!user;

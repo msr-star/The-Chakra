@@ -89,22 +89,8 @@ const AboutPage = () => {
                             whileHover={{ y: -6 }}
                             className="glass-panel p-8 rounded-3xl border border-white/5 flex flex-col items-center text-center group"
                         >
-                            <div className={`w-28 h-28 rounded-full p-[3px] bg-gradient-to-br ${member.gradient} mb-5 shadow-xl shrink-0`}>
-                                <img
-                                    src={member.photo}
-                                    alt={member.name}
-                                    className="w-full h-full rounded-full object-cover object-top"
-                                    onError={e => {
-                                        e.target.style.display = 'none';
-                                        e.target.nextSibling.style.display = 'flex';
-                                    }}
-                                />
-                                <div className="w-full h-full rounded-full hidden items-center justify-center text-white font-black text-2xl">
-                                    {member.initials}
-                                </div>
-                            </div>
-                            <h3 className="text-xl font-bold text-white mb-1">{member.name}</h3>
-                            <p className="text-accentLight text-sm font-semibold mb-4 tracking-wide">{member.role}</p>
+                            <div className={`w-24 h-2 p-1 bg-gradient-to-br ${member.gradient} mb-5 rounded-full`} />
+                            <h3 className="text-xl font-bold text-white mb-3">{member.name}</h3>
                             <p className="text-gray-400 text-sm leading-relaxed">{member.desc}</p>
                         </motion.div>
                     ))}

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 const CustomCursor = () => {
     const mainRef = useRef(null);
     const glowRef = useRef(null);
-    const [isHovered, setIsHovered] = useState(false);
+    // const isHovered = false; // Add hover state logic if deeply needed
     const isHoveredRef = useRef(false);
 
     useEffect(() => {

@@ -1,0 +1,165 @@
+
+> frontend@0.0.0 lint
+> eslint .
+
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\App.jsx
+  31:12  error  'e' is defined but never used  no-unused-vars
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\components\BentoGrid.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\components\ChakraCard.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\components\ChakraParticles.jsx
+  65:23  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  63 |         for (let i = 0; i < count; i++) {
+  64 |             // Distribute particles in a spherical/spiral pattern (Chakra shape)
+> 65 |             const r = Math.random() * 4 + 0.5;
+     |                       ^^^^^^^^^^^^^ Cannot call impure function
+  66 |             const theta = Math.random() * 2 * Math.PI;
+  67 |             const phi = Math.acos(Math.random() * 2 - 1);
+  68 |                      react-hooks/purity
+  66:27  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  64 |             // Distribute particles in a spherical/spiral pattern (Chakra shape)
+  65 |             const r = Math.random() * 4 + 0.5;
+> 66 |             const theta = Math.random() * 2 * Math.PI;
+     |                           ^^^^^^^^^^^^^ Cannot call impure function
+  67 |             const phi = Math.acos(Math.random() * 2 - 1);
+  68 |
+  69 |             // Apply some flattening to make it disc-like  react-hooks/purity
+  67:35  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  65 |             const r = Math.random() * 4 + 0.5;
+  66 |             const theta = Math.random() * 2 * Math.PI;
+> 67 |             const phi = Math.acos(Math.random() * 2 - 1);
+     |                                   ^^^^^^^^^^^^^ Cannot call impure function
+  68 |
+  69 |             // Apply some flattening to make it disc-like
+  70 |             const x = r * Math.sin(phi) * Math.cos(theta);                react-hooks/purity
+  79:30  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  77 |
+  78 |             // Mix colors
+> 79 |             const mixRatio = Math.random();
+     |                              ^^^^^^^^^^^^^ Cannot call impure function
+  80 |             const mixedColor = mixRatio > 0.6 ? color1 : (mixRatio > 0.3 ? color2 : color3);
+  81 |
+  82 |             colors[i * 3] = mixedColor.r;                                                                                             react-hooks/purity
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\components\CustomCursor.jsx
+  6:12  error  'isHovered' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\components\EclipseToggle.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\components\Footer.jsx
+  6:11  error  'location' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\components\HeroSection.jsx
+  1:17  error  'useEffect' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  1:28  error  'useRef' is defined but never used. Allowed unused vars must match /^[A-Z_]/u     no-unused-vars
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u     no-unused-vars
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\components\LandingFeatures.jsx
+   1:17  error  'useState' is defined but never used. Allowed unused vars must match /^[A-Z_]/u              no-unused-vars
+   1:27  error  'useEffect' is defined but never used. Allowed unused vars must match /^[A-Z_]/u             no-unused-vars
+   2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                no-unused-vars
+   6:30  error  'Icon' is defined but never used                                                             no-unused-vars
+  52:41  error  'role' is defined but never used                                                             no-unused-vars
+  87:11  error  'statsInView' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\components\MagneticButton.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\components\Navbar.jsx
+   3:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             no-unused-vars
+  14:65  error  'e' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             no-unused-vars
+  14:68  error  Empty block statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     no-empty
+  26:23  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  24 |
+  25 |     // Close menu on route change
+> 26 |     useEffect(() => { setMenuOpen(false); }, [location.pathname]);
+     |                       ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  27 |
+  28 |     const handleLogout = () => {
+  29 |         localStorage.removeItem('token');  react-hooks/set-state-in-effect
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\components\NeuralLoader.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\components\ResultDashboard.jsx
+  3:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\components\ThemeProvider.jsx
+  5:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\pages\AboutPage.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\pages\AdminDashboard.jsx
+   3:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  16:39  error  'Icon' is defined but never used                                               no-unused-vars
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\pages\AssessmentPage.jsx
+  3:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\pages\CareerResourcesPage.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\pages\LandingPage.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\pages\LoginPage.jsx
+  4:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\pages\RegisterPage.jsx
+  4:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\pages\ResultPage.jsx
+  4:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\pages\RootVerifyPage.jsx
+   4:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  no-unused-vars
+  18:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  16 |     useEffect(() => {
+  17 |         if (!candidateEmail) {
+> 18 |             setErrorMessage("Invalid link parameters. Missing candidate email.");
+     |             ^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  19 |             setStatus('error');
+  20 |         }
+  21 |     }, [candidateEmail]);  react-hooks/set-state-in-effect
+
+C:\Users\msroh\OneDrive\Desktop\Chakra\frontend\src\pages\StudentDashboard.jsx
+    2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+   13:14  error  'e' is defined but never used                                                  no-unused-vars
+   43:22  error  'e' is defined but never used                                                  no-unused-vars
+  155:67  error  'score' is defined but never used                                              no-unused-vars
+
+✖ 42 problems (42 errors, 0 warnings)
+

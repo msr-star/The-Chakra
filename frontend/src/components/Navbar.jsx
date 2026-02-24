@@ -11,7 +11,7 @@ const Navbar = () => {
 
     const userStr = localStorage.getItem('user');
     let user = null;
-    try { user = userStr ? JSON.parse(userStr) : null; } catch (e) { }
+    try { user = userStr ? JSON.parse(userStr) : null; } catch (_) { /* ignore */ }
 
     const isAuthenticated = !!localStorage.getItem('token');
     const isAdmin = user?.role === 'ADMIN';
@@ -23,6 +23,7 @@ const Navbar = () => {
     }, []);
 
     // Close menu on route change
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     useEffect(() => { setMenuOpen(false); }, [location.pathname]);
 
     const handleLogout = () => {
@@ -48,8 +49,8 @@ const Navbar = () => {
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
                 <div className={`flex items-center justify-between px-5 py-3 rounded-2xl transition-all duration-300 ${scrolled
-                        ? 'glass-strong shadow-[0_8px_32px_rgba(0,0,0,0.4)]'
-                        : 'glass'
+                    ? 'glass-strong shadow-[0_8px_32px_rgba(0,0,0,0.4)]'
+                    : 'glass'
                     }`}>
 
                     {/* Logo */}
@@ -81,8 +82,8 @@ const Navbar = () => {
                                 key={to}
                                 to={to}
                                 className={`relative px-4 py-2 text-sm font-medium rounded-xl transition-all duration-200 ${location.pathname === to
-                                        ? 'text-white bg-white/10'
-                                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                    ? 'text-white bg-white/10'
+                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
                                     }`}
                             >
                                 {label}
@@ -164,8 +165,8 @@ const Navbar = () => {
                             {navLinks.map(({ to, label }) => (
                                 <Link key={to} to={to}
                                     className={`px-4 py-3 text-sm font-medium rounded-xl transition-all ${location.pathname === to
-                                            ? 'text-white bg-white/10'
-                                            : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                        ? 'text-white bg-white/10'
+                                        : 'text-gray-400 hover:text-white hover:bg-white/5'
                                         }`}>
                                     {label}
                                 </Link>

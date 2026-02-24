@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Brain, Target, LineChart, Award, Quote, CheckCircle, Zap, Star, Sparkles } from 'lucide-react';
 
@@ -49,7 +49,7 @@ const StepCard = ({ number, title, description, delay = 0 }) => (
     </motion.div>
 );
 
-const TestimonialCard = ({ quote, name, role, outcome, avatar, accentColor, delay = 0 }) => (
+const TestimonialCard = ({ quote, name, outcome, avatar, accentColor, delay = 0 }) => (
     <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -84,7 +84,6 @@ const TestimonialCard = ({ quote, name, role, outcome, avatar, accentColor, dela
 
 const LandingFeatures = () => {
     const statsRef = useRef(null);
-    const statsInView = useInView(statsRef, { once: true });
 
     const features = [
         {

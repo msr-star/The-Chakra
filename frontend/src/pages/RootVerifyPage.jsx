@@ -13,6 +13,7 @@ const RootVerifyPage = () => {
     const [status, setStatus] = useState('idle'); // idle, loading, success, error
     const [errorMessage, setErrorMessage] = useState('');
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     useEffect(() => {
         if (!candidateEmail) {
             setErrorMessage("Invalid link parameters. Missing candidate email.");

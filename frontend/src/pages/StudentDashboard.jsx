@@ -10,7 +10,7 @@ const StudentDashboard = () => {
     let user = null;
     try {
         user = userStr ? JSON.parse(userStr) : null;
-    } catch (e) {
+    } catch (_) {
         user = null;
     }
 
@@ -40,7 +40,7 @@ const StudentDashboard = () => {
                 ]);
                 if (mentorRes.data?.mentorName) setMentor(mentorRes.data);
                 setTasks(tasksRes.data || []);
-            } catch (e) { /* silent fail */ }
+            } catch (_) { /* silent fail */ }
         };
         fetchResults();
         fetchMentorData();
@@ -152,7 +152,7 @@ const StudentDashboard = () => {
                                 Based on your matches for <strong className="text-accentLight">{latestResult.suggestedPath}</strong>, focus on improving these areas:
                             </p>
                             <div className="space-y-3">
-                                {lowestCategories.map(([category, score], i) => (
+                                {lowestCategories.map(([category, _score], i) => (
                                     <div key={i} className="flex items-center gap-3 p-3 bg-white/5 border border-white/5 rounded-xl">
                                         <div className="w-8 h-8 rounded-lg bg-[#FF8A8A]/10 text-[#FF8A8A] flex items-center justify-center">
                                             <TrendingUp size={14} />

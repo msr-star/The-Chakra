@@ -15,7 +15,9 @@ const careerMapping = {
 
 const TabButton = ({ id, label, icon: Icon, activeTab, setActiveTab }) => (
     <button
-        onClick={() => setActiveTab(id)}
+        onClick={() => {
+            setActiveTab(id);
+        }}
         className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${activeTab === id ? 'bg-accentLight text-background' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
     >
         <Icon size={16} /> {label}
@@ -56,7 +58,7 @@ const AdminDashboard = () => {
         refetchInterval: 15000
     });
 
-    const { data: students = [] } = useQuery({
+    const { data: students = [], refetch: refetchStudents } = useQuery({
         queryKey: ['studentsList'],
         queryFn: async () => {
             const res = await adminAPI.getStudents();
@@ -64,11 +66,23 @@ const AdminDashboard = () => {
         }
     });
 
+    // We will call refetchStudents when the 'students' tab is selected
+    React.useEffect(() => {
+        if (activeTab === 'students' || activeTab === 'mentorship') {
+            refetchStudents();
+            queryClient.invalidateQueries({ queryKey: ['adminStats'] });
+        }
+    }, [activeTab, refetchStudents, queryClient]);
+
     const deleteStudentMutation = useMutation({
         mutationFn: (userId) => adminAPI.deleteStudent(userId),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['studentsList'] });
             queryClient.invalidateQueries({ queryKey: ['adminStats'] });
+            alert("Student successfully removed.");
+        },
+        onError: (err) => {
+            alert("Failed to remove student. " + (err.response?.data?.message || err.message));
         }
     });
 

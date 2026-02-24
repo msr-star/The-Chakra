@@ -15,6 +15,8 @@ import RootVerifyPage from './pages/RootVerifyPage';
 import AboutPage from './pages/AboutPage';
 import CareerResourcesPage from './pages/CareerResourcesPage';
 
+import Footer from './components/Footer';
+
 const queryClient = new QueryClient();
 
 const AnimatedRoutes = () => {
@@ -26,7 +28,7 @@ const AnimatedRoutes = () => {
   let user = null;
   try {
     user = userStr ? JSON.parse(userStr) : null;
-  } catch (e) {
+  } catch (_) {
     user = null;
   }
 
@@ -55,8 +57,6 @@ const AnimatedRoutes = () => {
     </AnimatePresence>
   );
 };
-
-import Footer from './components/Footer';
 
 function App() {
   return (
