@@ -74,35 +74,6 @@ const AdminDashboard = () => {
         }
     }, [activeTab, refetchStudents, queryClient]);
 
-    const deleteStudentMutation = useMutation({
-        mutationFn: (userId) => adminAPI.deleteStudent(userId),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['studentsList'] });
-            queryClient.invalidateQueries({ queryKey: ['adminStats'] });
-            alert("Student successfully removed.");
-        },
-        onError: (err) => {
-            alert("Failed to remove student. " + (err.response?.data?.message || err.message));
-        }
-    });
-
-    const deleteQuestionMutation = useMutation({
-        mutationFn: (questionId) => adminAPI.deleteQuestion(questionId),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['questions'] });
-            setMessage('Question deleted successfully.');
-        },
-        onError: () => {
-            setMessage('Error deleting question.');
-        }
-    });
-
-    const handleDeleteStudent = (userId) => {
-        if (window.confirm("Are you sure you want to remove this student? This action cannot be undone.")) {
-            deleteStudentMutation.mutate(userId);
-        }
-    };
-
     // ── Mentorship mutations ──
     const adminUser = (() => { try { return JSON.parse(localStorage.getItem('user')); } catch { return null; } })();
 
@@ -475,7 +446,6 @@ const AdminDashboard = () => {
                                 <tr className="border-b border-white/10 text-xs uppercase tracking-widest text-gray-500">
                                     <th className="py-4 px-4 font-normal">Student Name</th>
                                     <th className="py-4 px-4 font-normal">Email / Phone</th>
-                                    <th className="py-4 px-4 font-normal text-right">Action</th>
                                 </tr>
                             </thead>
                             <tbody className="text-sm text-gray-300">
@@ -499,14 +469,6 @@ const AdminDashboard = () => {
                                                     <span className="text-accentLight">{student.email}</span>
                                                     <span className="text-xs text-gray-500">{student.phoneNumber}</span>
                                                 </div>
-                                            </td>
-                                            <td className="py-4 px-4 text-right">
-                                                <button
-                                                    onClick={() => handleDeleteStudent(student.id)}
-                                                    className="opacity-50 group-hover:opacity-100 transition-opacity bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/20 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-widest flex items-center gap-1 ml-auto"
-                                                >
-                                                    <Trash2 size={12} /> Remove
-                                                </button>
                                             </td>
                                         </motion.tr>
                                     ))}
