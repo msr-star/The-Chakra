@@ -68,55 +68,75 @@ public class AuthService {
 
         @Transactional
         public AuthResponseDto register(RegisterRequestDto request) {
-                if (userRepository.existsByEmail(request.getEmail())) {
-                        throw new IllegalArgumentException("Email already in use");
-                }
-                if (request.getPhoneNumber() != null && !request.getPhoneNumber().isEmpty()
-                                && userRepository.existsByPhoneNumber(request.getPhoneNumber())) {
-                        throw new IllegalArgumentException("Phone number already in use");
-                }
+                boolean isAdminRegistration = request.getAdminCode() != null
+                                && !request.getAdminCode().trim().isEmpty();
 
-                Role assignedRole = Role.STUDENT;
-
-                if (request.getAdminCode() != null && !request.getAdminCode().trim().isEmpty()) {
+                if (isAdminRegistration) {
                         Optional<VerificationToken> otpOpt = verificationTokenRepository
                                         .findByEmailAndTokenType(request.getEmail(),
                                                         VerificationToken.TokenType.ADMIN_REGISTRATION);
 
                         if (otpOpt.isPresent()) {
                                 VerificationToken token = otpOpt.get();
-                                log.debug("[DEBUG] Comparing Input: {} with DB Token: {} for Type: {}",
-                                                request.getAdminCode(), token.getToken(),
-                                                VerificationToken.TokenType.ADMIN_REGISTRATION);
-
-                                if (token.getToken().equals(request.getAdminCode())
-                                                && token.getExpiryDate().isAfter(LocalDateTime.now(ZoneId.of("UTC")))) {
-                                        assignedRole = Role.ADMIN;
-                                        verificationTokenRepository.delete(token);
-                                } else {
-                                        log.debug("[DEBUG] Token Mismatch or Expired. Input: {}, DB: {}, Expired: {}",
-                                                        request.getAdminCode(), token.getToken(), token.getExpiryDate()
-                                                                        .isBefore(LocalDateTime.now(ZoneId.of("UTC"))));
+                                if (!token.getToken().equals(request.getAdminCode())) {
+                                        throw new IllegalArgumentException("Invalid Admin Code");
                                 }
+                                if (token.getExpiryDate().isBefore(LocalDateTime.now(ZoneId.of("UTC")))) {
+                                        throw new IllegalArgumentException("Expired Admin Code");
+                                }
+                                verificationTokenRepository.delete(token);
                         } else {
-                                log.debug("[DEBUG] No DB Token found for Input: {} and Type: {}",
-                                                request.getAdminCode(), VerificationToken.TokenType.ADMIN_REGISTRATION);
+                                throw new IllegalArgumentException("Invalid Admin Code generated");
                         }
                 }
 
-                String phoneToSave = (request.getPhoneNumber() != null && request.getPhoneNumber().trim().isEmpty())
-                                ? null
-                                : request.getPhoneNumber();
+                Optional<User> existingUserOpt = userRepository.findByEmail(request.getEmail());
+                User user;
 
-                User user = User.builder()
-                                .name(request.getName())
-                                .email(request.getEmail())
-                                .phoneNumber(phoneToSave)
-                                .password(passwordEncoder.encode(request.getPassword()))
-                                .role(assignedRole)
-                                .build();
+                if (existingUserOpt.isPresent()) {
+                        user = existingUserOpt.get();
 
-                userRepository.save(user);
+                        if (request.getPhoneNumber() != null && !request.getPhoneNumber().isEmpty() &&
+                                        !request.getPhoneNumber().equals(user.getPhoneNumber()) &&
+                                        userRepository.existsByPhoneNumber(request.getPhoneNumber())) {
+                                throw new IllegalArgumentException("Phone number already in use by another account");
+                        }
+
+                        if (isAdminRegistration) {
+                                user.setRole(Role.ADMIN);
+                                user.setName(request.getName());
+                                user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+                                String phoneToSave = (request.getPhoneNumber() != null
+                                                && request.getPhoneNumber().trim().isEmpty())
+                                                                ? null
+                                                                : request.getPhoneNumber();
+                                user.setPhoneNumber(phoneToSave);
+                                userRepository.save(user);
+                        } else {
+                                throw new IllegalArgumentException("Email already in use");
+                        }
+                } else {
+                        if (request.getPhoneNumber() != null && !request.getPhoneNumber().isEmpty()
+                                        && userRepository.existsByPhoneNumber(request.getPhoneNumber())) {
+                                throw new IllegalArgumentException("Phone number already in use");
+                        }
+
+                        String phoneToSave = (request.getPhoneNumber() != null
+                                        && request.getPhoneNumber().trim().isEmpty())
+                                                        ? null
+                                                        : request.getPhoneNumber();
+
+                        user = User.builder()
+                                        .name(request.getName())
+                                        .email(request.getEmail())
+                                        .phoneNumber(phoneToSave)
+                                        .password(passwordEncoder.encode(request.getPassword()))
+                                        .role(isAdminRegistration ? Role.ADMIN : Role.STUDENT)
+                                        .build();
+
+                        userRepository.save(user);
+                }
 
                 String jwtToken = jwtUtils.generateToken(user.getEmail());
                 RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getId());

@@ -115,8 +115,9 @@ const RegisterPage = () => {
             if (res.data.refreshToken) localStorage.setItem('refreshToken', res.data.refreshToken);
             localStorage.setItem('user', JSON.stringify(res.data.user));
             navigate(res.data.user.role === 'ADMIN' ? '/admin' : '/student');
-        } catch {
-            setError('Registration failed. Email or phone may already be in use, or the Admin Code is invalid.');
+        } catch (err) {
+            const errorMsg = err.response?.data?.message || err.response?.data?.error || err.message || 'Please make sure email/phone are not already in use.';
+            setError(`Registration failed: ${errorMsg}`);
             setMessage('');
         }
     };
