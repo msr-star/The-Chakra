@@ -30,6 +30,7 @@ public class AdminController {
         private final AssessmentResultRepository assessmentResultRepository;
         private final VerificationTokenRepository verificationTokenRepository;
         private final MentorTaskRepository mentorTaskRepository;
+        private final RefreshTokenRepository refreshTokenRepository;
         private final SystemAuditService systemAuditService;
         private final UserMapper userMapper;
         private final EmailService emailService;
@@ -101,6 +102,7 @@ public class AdminController {
                         @PathVariable UUID userId) {
                 userRepository.findById(userId).ifPresent(user -> {
                         verificationTokenRepository.deleteByEmail(user.getEmail());
+                        refreshTokenRepository.deleteByUser(user);
                 });
                 assessmentResultRepository.deleteByUserId(userId);
                 mentorTaskRepository.deleteByStudentId(userId);
