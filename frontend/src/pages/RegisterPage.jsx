@@ -192,7 +192,7 @@ const RegisterPage = () => {
                             <label className="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
                             <div className="relative">
                                 <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
-                                <input type="text" required className="input-field pl-11" placeholder="John Doe"
+                                <input type="text" required className="input-field pl-11"
                                     value={name} onChange={e => setName(e.target.value)} />
                             </div>
                         </div>
@@ -202,7 +202,7 @@ const RegisterPage = () => {
                             <label className="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
                             <div className="relative">
                                 <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
-                                <input type="email" required className="input-field pl-11" placeholder="you@example.com"
+                                <input type="email" required className="input-field pl-11"
                                     value={email} onChange={e => setEmail(e.target.value)} />
                             </div>
                         </div>
@@ -212,7 +212,7 @@ const RegisterPage = () => {
                             <label className="block text-sm font-medium text-gray-300 mb-2">Phone Number <span className="text-gray-600">(optional)</span></label>
                             <div className="relative">
                                 <Phone size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
-                                <input type="tel" className="input-field pl-11" placeholder="+91 98765 43210"
+                                <input type="tel" className="input-field pl-11"
                                     value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} />
                             </div>
                         </div>
@@ -223,7 +223,7 @@ const RegisterPage = () => {
                             <div className="relative">
                                 <Lock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
                                 <input type={showPwd ? 'text' : 'password'} required
-                                    className="input-field pl-11 pr-12" placeholder="Min. 8 characters"
+                                    className="input-field pl-11 pr-12"
                                     value={password} onChange={e => setPassword(e.target.value)} />
                                 <button type="button"
                                     className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
