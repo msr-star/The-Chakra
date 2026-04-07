@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -178,7 +179,7 @@ public class AdminController {
                                 .title(body.getOrDefault("title", "Daily Assignment"))
                                 .content(body.getOrDefault("content", ""))
                                 .resourceUrl(body.get("resourceUrl"))
-                                .createdAt(LocalDateTime.now())
+                                .createdAt(LocalDateTime.now(ZoneId.of("UTC")))
                                 .build();
                 mentorTaskRepository.save(task);
                 systemAuditService.logAction("ADMIN_SEND_TASK", "Sent task to: " + student.getEmail(),
@@ -199,13 +200,4 @@ public class AdminController {
                 return ResponseEntity.ok(students);
         }
 
-        /** Student gets their own tasks from their assigned admin */
-        @GetMapping("/my-tasks")
-        public ResponseEntity<List<MentorTask>> getMyTasks(
-                        @AuthenticationPrincipal CustomUserDetails student) {
-                User studentUser = userRepository.findByEmail(student.getUsername())
-                                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-                List<MentorTask> tasks = mentorTaskRepository.findByStudentIdOrderByCreatedAtDesc(studentUser.getId());
-                return ResponseEntity.ok(tasks);
-        }
 }

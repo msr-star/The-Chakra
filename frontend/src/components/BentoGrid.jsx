@@ -206,7 +206,7 @@ const BentoGrid = () => {
                     {/* Data - tall */}
                     <BentoCard
                         career={careers[2]}
-                        className="md:col-span-2 md:row-span-2 -mt-[calc(220px+1.25rem)] hidden md:block"
+                        className="md:col-span-4 lg:col-span-2 md:row-span-2 hidden md:block"
                         delay={0.12}
                     />
                 </div>

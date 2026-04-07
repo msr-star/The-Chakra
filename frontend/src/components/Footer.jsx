@@ -11,7 +11,7 @@ const Footer = () => {
 
     const platformLinks = [
         { to: '/assessment', label: 'Career Assessment' },
-        { to: '/resources', label: 'Career Resources' },
+        ...(isStudent ? [{ to: '/resources', label: 'Career Resources' }] : []),
         ...(isStudent ? [{ to: '/student', label: 'My Dashboard' }] : []),
         ...(isAdmin ? [{ to: '/admin', label: 'Admin Dashboard' }] : []),
         ...(!isLoggedIn ? [

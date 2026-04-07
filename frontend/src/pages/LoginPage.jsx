@@ -155,8 +155,8 @@ const LoginPage = () => {
     };
 
     return (
-        <div className="min-h-screen flex"
-            style={{ background: '#120803', paddingTop: '0' }}>
+        <div className="min-h-screen flex pt-24 lg:pt-0"
+            style={{ background: '#120803' }}>
 
             {/* Left brand panel (takes 45% on desktop) */}
             <div className="lg:w-[45%] lg:min-h-screen">
@@ -225,7 +225,6 @@ const LoginPage = () => {
                                     <div className="relative">
                                         <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
                                         <input type="text" required className="input-field pl-11"
-                                            placeholder="you@example.com"
                                             value={email} onChange={e => setEmail(e.target.value)} />
                                     </div>
                                 </div>
@@ -235,7 +234,6 @@ const LoginPage = () => {
                                         <Lock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
                                         <input type={showPwd ? 'text' : 'password'} required
                                             className="input-field pl-11 pr-12"
-                                            placeholder="••••••••"
                                             value={password} onChange={e => setPassword(e.target.value)} />
                                         <button type="button"
                                             className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"

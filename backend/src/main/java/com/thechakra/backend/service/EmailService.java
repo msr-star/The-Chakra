@@ -20,6 +20,9 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String senderEmail;
 
+    @Value("${app.frontend.url:http://localhost:5173}")
+    private String frontendUrl;
+
     public void sendEmail(String to, String subject, String body) {
         // Fallback for any pure plain-text usages, though we'll route via HTML wrapper
         // now
@@ -63,7 +66,7 @@ public class EmailService {
 
     public void sendAdminApprovalRequest(String candidateEmail, String candidateName) {
         String subject = "AWAITING ROOT DIRECTIVE";
-        String approvalLink = "http://localhost:5173/root-verify?email=" + candidateEmail;
+        String approvalLink = frontendUrl + "/root-verify?email=" + candidateEmail;
         String htmlBody = "<div style=\"font-family: 'Inter', sans-serif; background-color: #0B0E14; color: #E2E8F0; padding: 40px; border-radius: 12px; border: 1px solid #1E293B; max-width: 600px; margin: 0 auto; text-align: center;\">"
                 +
                 "<h2 style=\"color: #F87171; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px;\">Authorization Required</h2>"
@@ -140,7 +143,7 @@ public class EmailService {
 
                 // CTA Button
                 + "<div style=\"text-align: center; margin: 32px 0;\">"
-                + "<a href=\"http://localhost:5173/student\" style=\"display: inline-block; background: linear-gradient(135deg, #06B6D4, #8B5CF6); color: white; font-weight: 800; font-size: 16px; padding: 14px 36px; border-radius: 50px; text-decoration: none; letter-spacing: 0.5px;\">🎯 Open My Dashboard</a>"
+                + "<a href=\"" + frontendUrl + "/student\" style=\"display: inline-block; background: linear-gradient(135deg, #06B6D4, #8B5CF6); color: white; font-weight: 800; font-size: 16px; padding: 14px 36px; border-radius: 50px; text-decoration: none; letter-spacing: 0.5px;\">🎯 Open My Dashboard</a>"
                 + "</div>"
 
                 // Footer

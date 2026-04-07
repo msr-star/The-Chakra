@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LogOut, LayoutDashboard, ShieldCheck, Menu, X, Zap } from 'lucide-react';
+import { LogOut, LayoutDashboard, ShieldCheck, Menu, X, Zap, Sun, Moon } from 'lucide-react';
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -13,8 +13,24 @@ const Navbar = () => {
     let user = null;
     try { user = userStr ? JSON.parse(userStr) : null; } catch (_) { /* ignore */ }
 
+    const [isLightMode, setIsLightMode] = useState(() => {
+        return document.documentElement.classList.contains('light-mode');
+    });
+
     const isAuthenticated = !!localStorage.getItem('token');
     const isAdmin = user?.role === 'ADMIN';
+    const isStudent = user?.role === 'STUDENT';
+
+    const toggleTheme = () => {
+        const root = document.documentElement;
+        if (isLightMode) {
+            root.classList.remove('light-mode');
+            setIsLightMode(false);
+        } else {
+            root.classList.add('light-mode');
+            setIsLightMode(true);
+        }
+    };
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 20);
@@ -35,7 +51,7 @@ const Navbar = () => {
 
     const navLinks = [
         { to: '/about', label: 'About' },
-        { to: '/resources', label: 'Resources' },
+        ...(isStudent ? [{ to: '/resources', label: 'Resources' }] : []),
         { to: '/assessment', label: 'Take Assessment' },
     ];
 
@@ -122,6 +138,13 @@ const Navbar = () => {
                             </>
                         ) : (
                             <>
+                                <button
+                                    onClick={toggleTheme}
+                                    className="p-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all mr-2"
+                                    title="Toggle Light/Dark Mode"
+                                >
+                                    {isLightMode ? <Moon size={18} /> : <Sun size={18} />}
+                                </button>
                                 <Link to="/login"
                                     className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors">
                                     Sign In
@@ -133,11 +156,20 @@ const Navbar = () => {
                         )}
                     </div>
 
-                    {/* Mobile Toggle */}
-                    <button
-                        onClick={() => setMenuOpen(!menuOpen)}
-                        className="md:hidden p-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all"
-                    >
+                    {/* Mobile Controls */}
+                    <div className="md:hidden flex items-center gap-2">
+                        {!isAuthenticated && (
+                            <button
+                                onClick={toggleTheme}
+                                className="p-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all"
+                            >
+                                {isLightMode ? <Moon size={18} /> : <Sun size={18} />}
+                            </button>
+                        )}
+                        <button
+                            onClick={() => setMenuOpen(!menuOpen)}
+                            className="p-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all"
+                        >
                         <AnimatePresence mode="wait" initial={false}>
                             <motion.div
                                 key={menuOpen ? 'x' : 'menu'}
@@ -150,6 +182,7 @@ const Navbar = () => {
                             </motion.div>
                         </AnimatePresence>
                     </button>
+                    </div>
                 </div>
 
                 {/* Mobile Menu */}

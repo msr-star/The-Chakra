@@ -26,6 +26,8 @@ import java.util.UUID;
 @Slf4j
 public class AssessmentService {
 
+        private static final ObjectMapper MAPPER = new ObjectMapper();
+
         private final QuestionRepository questionRepository;
         private final OptionRepository optionRepository;
         private final AssessmentResultRepository resultRepository;
@@ -45,7 +47,6 @@ public class AssessmentService {
                                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
                 Map<String, Double> categoryScores = new HashMap<>();
-                ObjectMapper mapper = new ObjectMapper();
 
                 // The Chakra Algorithm: Calculate weighted average
                 for (AnswerDto answer : answers) {
@@ -69,7 +70,7 @@ public class AssessmentService {
                         // The Dharma Algorithm: Inject granular Career Mappings if they exist
                         if (option.getCareerMapping() != null && !option.getCareerMapping().trim().isEmpty()) {
                                 try {
-                                        Map<String, Double> mapping = mapper.readValue(option.getCareerMapping(),
+                                        Map<String, Double> mapping = MAPPER.readValue(option.getCareerMapping(),
                                                         new TypeReference<Map<String, Double>>() {
                                                         });
                                         for (Map.Entry<String, Double> entry : mapping.entrySet()) {

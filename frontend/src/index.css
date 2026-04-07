@@ -57,6 +57,17 @@
     font-family: var(--font-sans);
     overflow-x: hidden;
     line-height: 1.6;
+    transition: filter 0.4s ease;
+  }
+
+  html.light-mode {
+    filter: invert(0.95) hue-rotate(180deg) brightness(1.1);
+  }
+  html.light-mode img, 
+  html.light-mode video, 
+  html.light-mode .no-invert,
+  html.light-mode [style*="background-image"] {
+    filter: invert(1) hue-rotate(180deg);
   }
 
   h1,
