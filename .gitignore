@@ -1,0 +1,5 @@
+backend/target/
+.env.properties
+backend_log*.txt
+push_error.txt
+output.log
