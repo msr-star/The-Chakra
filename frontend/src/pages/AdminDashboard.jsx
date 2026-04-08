@@ -13,14 +13,14 @@ const careerMapping = {
     'Detail': ['Data Scientist', 'Machine Learning Engineer', 'Security Analyst'],
 };
 
-const TabButton = ({ id, label, icon: Icon, activeTab, setActiveTab }) => (
+const TabButton = ({ id, label, icon: TabIcon, activeTab, setActiveTab }) => (
     <button
         onClick={() => {
             setActiveTab(id);
         }}
         className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${activeTab === id ? 'bg-accentLight text-background' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
     >
-        <Icon size={16} /> {label}
+        <TabIcon size={16} /> {label}
     </button>
 );
 

@@ -10,7 +10,7 @@ const StudentDashboard = () => {
     let user = null;
     try {
         user = userStr ? JSON.parse(userStr) : null;
-    } catch (_) {
+    } catch (_e) {
         user = null;
     }
 
@@ -40,7 +40,7 @@ const StudentDashboard = () => {
                 ]);
                 if (mentorRes.data?.mentorName) setMentor(mentorRes.data);
                 setTasks(tasksRes.data || []);
-            } catch (_) { /* silent fail */ }
+            } catch (_e) { /* silent fail */ }
         };
         fetchResults();
         fetchMentorData();

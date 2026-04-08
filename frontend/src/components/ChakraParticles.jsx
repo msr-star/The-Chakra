@@ -53,6 +53,7 @@ const ChakraParticles = ({ count = 4000 }) => {
     const { mouse, viewport } = useThree();
 
     // Create particles
+    // eslint-disable-next-line react-hooks/purity
     const [positions, colors] = useMemo(() => {
         const positions = new Float32Array(count * 3);
         const colors = new Float32Array(count * 3);

@@ -11,7 +11,7 @@ const Navbar = () => {
 
     const userStr = localStorage.getItem('user');
     let user = null;
-    try { user = userStr ? JSON.parse(userStr) : null; } catch (_) { /* ignore */ }
+    try { user = userStr ? JSON.parse(userStr) : null; } catch (_err) { /* ignore parse error */ }
 
     const [isLightMode, setIsLightMode] = useState(() => {
         return document.documentElement.classList.contains('light-mode');
@@ -38,8 +38,8 @@ const Navbar = () => {
         return () => window.removeEventListener('scroll', onScroll);
     }, []);
 
-    // Close menu on route change
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    // Close mobile menu when the route changes (intentional side-effect)
+    // eslint-disable-next-line react-hooks/set-state-in-effect, react-hooks/exhaustive-deps
     useEffect(() => { setMenuOpen(false); }, [location.pathname]);
 
     const handleLogout = () => {

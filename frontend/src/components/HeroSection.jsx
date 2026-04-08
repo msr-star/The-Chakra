@@ -1,4 +1,5 @@
 import React from 'react';
+// HeroSection: no hooks needed beyond what framer-motion provides
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles, Users, Award, Target, Code } from 'lucide-react';

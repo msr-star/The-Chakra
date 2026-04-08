@@ -1,9 +1,9 @@
-import React, { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { Brain, Target, LineChart, Award, Quote, CheckCircle, Zap, Star, Sparkles } from 'lucide-react';
 
 
-const FeatureCard = ({ icon: Icon, title, description, color, delay = 0 }) => (
+const FeatureCard = ({ icon: CardIcon, title, description, color, delay = 0 }) => (
     <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -13,7 +13,7 @@ const FeatureCard = ({ icon: Icon, title, description, color, delay = 0 }) => (
     >
         <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
             style={{ background: `${color}20`, border: `1px solid ${color}30` }}>
-            <Icon size={22} style={{ color }} />
+            <CardIcon size={22} style={{ color }} />
         </div>
         <div>
             <h3 className="text-lg font-bold text-white mb-2" style={{ fontFamily: 'Outfit, sans-serif' }}>
@@ -83,7 +83,6 @@ const TestimonialCard = ({ quote, name, outcome, avatar, accentColor, delay = 0 
 );
 
 const LandingFeatures = () => {
-    const statsRef = useRef(null);
 
     const features = [
         {

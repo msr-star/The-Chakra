@@ -16,8 +16,11 @@ const RootVerifyPage = () => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     useEffect(() => {
         if (!candidateEmail) {
-            setErrorMessage("Invalid link parameters. Missing candidate email.");
-            setStatus('error');
+            // Set both states in a single microtask to avoid cascading renders
+            Promise.resolve().then(() => {
+                setErrorMessage("Invalid link parameters. Missing candidate email.");
+                setStatus('error');
+            });
         }
     }, [candidateEmail]);
 

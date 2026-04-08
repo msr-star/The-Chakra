@@ -28,7 +28,7 @@ const AnimatedRoutes = () => {
   let user = null;
   try {
     user = userStr ? JSON.parse(userStr) : null;
-  } catch (_) {
+  } catch (_e) {
     user = null;
   }
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const CustomCursor = () => {
     const mainRef = useRef(null);
@@ -22,10 +22,7 @@ const CustomCursor = () => {
 
         const handlePointerOver = (e) => {
             const hovered = !!e.target.closest("a, button");
-            if (hovered !== isHoveredRef.current) {
-                isHoveredRef.current = hovered;
-                setIsHovered(hovered);
-            }
+            isHoveredRef.current = hovered;
         };
 
         const lerp = (a, b, t) => a + (b - a) * t;
