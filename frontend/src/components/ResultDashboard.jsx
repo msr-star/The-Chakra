@@ -37,7 +37,7 @@ const ResultDashboard = ({ result }) => {
         try {
             const canvas = await html2canvas(dashboardRef.current, {
                 scale: 2,
-                backgroundColor: '#0B0E14',
+                backgroundColor: '#120803',
                 logging: false,
                 useCORS: true
             });
@@ -73,7 +73,7 @@ const ResultDashboard = ({ result }) => {
                 </button>
             </div>
             {/* The ref wraps the actual content we want to capture */}
-            <div ref={dashboardRef} className="w-full flex flex-col items-center p-8 rounded-3xl bg-[#0B0E14]">
+            <div ref={dashboardRef} className="w-full flex flex-col items-center p-8 rounded-3xl bg-[#120803]">
                 <div className="text-center mb-12 w-full">
                     <h2 className="text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-accentLight to-white">
                         Alignment Complete

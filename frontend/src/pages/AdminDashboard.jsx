@@ -3,6 +3,7 @@ import { adminAPI, assessmentAPI } from '../api';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Trash2, PlusCircle, Users, BookOpen, Activity, ShieldCheck, UserCheck, Mail, Send, X, Zap } from 'lucide-react';
+import PageTransition from '../components/PageTransition';
 
 const careerMapping = {
     'Logic': ['Backend Software Engineer', 'Database Administrator', 'Systems Architect'],
@@ -110,6 +111,26 @@ const AdminDashboard = () => {
         sendTaskMutation.mutate({ studentId: taskModalStudent.id, data: { title: taskTitle, content: taskContent, resourceUrl: taskUrl || null } });
     };
 
+    const deleteQuestionMutation = useMutation({
+        mutationFn: (questionId) => adminAPI.deleteQuestion(questionId),
+        onMutate: async (questionId) => {
+            await queryClient.cancelQueries({ queryKey: ['questions'] });
+            const previousQuestions = queryClient.getQueryData(['questions']) || [];
+            queryClient.setQueryData(['questions'], (old = []) => old.filter(q => q.id !== questionId));
+            return { previousQuestions };
+        },
+        onError: (_err, _questionId, context) => {
+            queryClient.setQueryData(['questions'], context?.previousQuestions);
+            setMessage('Error deleting question. Please try again.');
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries({ queryKey: ['questions'] });
+        },
+        onSuccess: () => {
+            setMessage('Question deleted successfully.');
+        },
+    });
+
     const handleDeleteQuestion = (questionId) => {
         if (window.confirm("Are you sure you want to delete this question? This action cannot be undone.")) {
             deleteQuestionMutation.mutate(questionId);
@@ -202,6 +223,7 @@ const AdminDashboard = () => {
     };
 
     return (
+        <PageTransition>
         <div className="min-h-screen text-white pt-32 pb-16 px-4 md:px-8 max-w-5xl mx-auto space-y-8 flex flex-col items-center" style={{ background: '#120803' }}>
 
             {/* Header */}
@@ -635,7 +657,7 @@ const AdminDashboard = () => {
                             initial={{ scale: 0.95, y: 20 }}
                             animate={{ scale: 1, y: 0 }}
                             exit={{ scale: 0.95, y: 20 }}
-                            className="bg-[#0B0E14] border border-white/10 rounded-3xl p-8 w-full max-w-lg shadow-2xl"
+                            className="bg-[#120803] border border-white/10 rounded-3xl p-8 w-full max-w-lg shadow-2xl"
                         >
                             <div className="flex items-center justify-between mb-6">
                                 <div>
@@ -691,6 +713,7 @@ const AdminDashboard = () => {
             </AnimatePresence>
 
         </div>
+        </PageTransition>
     );
 };
 

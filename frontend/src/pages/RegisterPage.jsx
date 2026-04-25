@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authAPI } from '../api';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, Mail, Phone, Lock, ArrowRight, Eye, EyeOff, Zap, ShieldAlert, CheckCircle } from 'lucide-react';
+import { User, Mail, Phone, Lock, ArrowRight, Eye, EyeOff, Zap, ShieldAlert, CheckCircle, Loader2 } from 'lucide-react';
+import PageTransition from '../components/PageTransition';
 
 /* Left branding panel (different from login) */
 const BrandPanel = () => (
@@ -105,10 +106,12 @@ const RegisterPage = () => {
     const [showPwd, setShowPwd] = useState(false);
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const res = await authAPI.register({ name, email, phoneNumber, password, adminCode });
             localStorage.setItem('token', res.data.token);
@@ -119,6 +122,8 @@ const RegisterPage = () => {
             const errorMsg = err.response?.data?.message || err.response?.data?.error || err.message || 'Please make sure email/phone are not already in use.';
             setError(`Registration failed: ${errorMsg}`);
             setMessage('');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -135,6 +140,7 @@ const RegisterPage = () => {
     };
 
     return (
+        <PageTransition>
         <div className="min-h-screen flex" style={{ background: '#120803' }}>
 
             {/* Left brand panel */}
@@ -256,8 +262,8 @@ const RegisterPage = () => {
                             </AnimatePresence>
                         </div>
 
-                        <button type="submit" className="btn-accent w-full justify-center text-base py-3.5 mt-2">
-                            Create Free Account <ArrowRight size={16} />
+                        <button type="submit" disabled={loading} className="btn-accent w-full justify-center text-base py-3.5 mt-2 disabled:opacity-60 disabled:cursor-not-allowed">
+                            {loading ? <><Loader2 size={16} className="animate-spin" /> Creating account...</> : <>Create Free Account <ArrowRight size={16} /></>}
                         </button>
                     </form>
 
@@ -271,6 +277,7 @@ const RegisterPage = () => {
                 </motion.div>
             </div>
         </div>
+        </PageTransition>
     );
 };
 

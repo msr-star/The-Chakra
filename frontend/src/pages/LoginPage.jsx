@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authAPI } from '../api';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, Lock, ShieldCheck, ArrowRight, Eye, EyeOff, Zap, ArrowLeft } from 'lucide-react';
+import { Mail, Lock, ShieldCheck, ArrowRight, Eye, EyeOff, Zap, ArrowLeft, Loader2 } from 'lucide-react';
+import PageTransition from '../components/PageTransition';
 
 /* Left branding panel */
 const BrandPanel = () => (
@@ -100,11 +101,12 @@ const LoginPage = () => {
     const [showPwd, setShowPwd] = useState(false);
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const clearMsgs = () => { setError(''); setMessage(''); };
 
     const handleStandardLogin = async (e) => {
-        e.preventDefault(); clearMsgs();
+        e.preventDefault(); clearMsgs(); setLoading(true);
         try {
             const res = await authAPI.login({ identifier: email, password });
             if (res.data.message === 'OTP_SENT') {
@@ -112,14 +114,16 @@ const LoginPage = () => {
                 setMessage('A verification code has been sent to your email.');
             } else { completeLogin(res.data); }
         } catch { setError('Invalid email/phone or password. Please try again.'); }
+        finally { setLoading(false); }
     };
 
     const handleVerifyAdminOtp = async (e) => {
-        e.preventDefault(); clearMsgs();
+        e.preventDefault(); clearMsgs(); setLoading(true);
         try {
             const res = await authAPI.verifyAdminLogin({ email, otp });
             completeLogin(res.data);
         } catch { setError('Invalid or expired verification code.'); }
+        finally { setLoading(false); }
     };
 
     const completeLogin = (data) => {
@@ -130,21 +134,23 @@ const LoginPage = () => {
     };
 
     const handleForgotPassword = async (e) => {
-        e.preventDefault(); clearMsgs();
+        e.preventDefault(); clearMsgs(); setLoading(true);
         try {
             await authAPI.forgotPassword({ email });
             setView('RESET_PWD');
             setMessage('Password reset code sent to your email.');
         } catch { setError('Could not send reset code. Please verify your email.'); }
+        finally { setLoading(false); }
     };
 
     const handleResetPassword = async (e) => {
-        e.preventDefault(); clearMsgs();
+        e.preventDefault(); clearMsgs(); setLoading(true);
         try {
             await authAPI.resetPassword({ email, otp, newPassword });
             setView('LOGIN'); setOtp(''); setNewPassword(''); setPassword('');
             setMessage('Password reset successfully. You can now log in.');
         } catch { setError('Invalid or expired reset code.'); }
+        finally { setLoading(false); }
     };
 
     const viewMeta = {
@@ -155,6 +161,7 @@ const LoginPage = () => {
     };
 
     return (
+        <PageTransition>
         <div className="min-h-screen flex pt-24 lg:pt-0"
             style={{ background: '#120803' }}>
 
@@ -249,8 +256,8 @@ const LoginPage = () => {
                                         Forgot password?
                                     </button>
                                 </div>
-                                <button type="submit" className="btn-primary w-full justify-center text-base py-3.5 mt-2">
-                                    Sign In <ArrowRight size={16} />
+                                <button type="submit" disabled={loading} className="btn-primary w-full justify-center text-base py-3.5 mt-2 disabled:opacity-60 disabled:cursor-not-allowed">
+                                    {loading ? <><Loader2 size={16} className="animate-spin" /> Signing in...</> : <>Sign In <ArrowRight size={16} /></>}
                                 </button>
                             </motion.form>
                         )}
@@ -268,8 +275,8 @@ const LoginPage = () => {
                                             placeholder="000000" value={otp} onChange={e => setOtp(e.target.value)} />
                                     </div>
                                 </div>
-                                <button type="submit" className="btn-primary w-full justify-center text-base py-3.5">
-                                    Verify &amp; Access Admin
+                                <button type="submit" disabled={loading} className="btn-primary w-full justify-center text-base py-3.5 disabled:opacity-60 disabled:cursor-not-allowed">
+                                    {loading ? <><Loader2 size={16} className="animate-spin" /> Verifying...</> : <>Verify &amp; Access Admin</>}
                                 </button>
                                 <button type="button" onClick={() => { setView('LOGIN'); clearMsgs(); }}
                                     className="w-full flex items-center justify-center gap-2 text-sm text-gray-500 hover:text-gray-300 transition-colors">
@@ -291,8 +298,8 @@ const LoginPage = () => {
                                             value={email} onChange={e => setEmail(e.target.value)} />
                                     </div>
                                 </div>
-                                <button type="submit" className="btn-primary w-full justify-center text-base py-3.5">
-                                    Send Reset Code <ArrowRight size={16} />
+                                <button type="submit" disabled={loading} className="btn-primary w-full justify-center text-base py-3.5 disabled:opacity-60 disabled:cursor-not-allowed">
+                                    {loading ? <><Loader2 size={16} className="animate-spin" /> Sending...</> : <>Send Reset Code <ArrowRight size={16} /></>}
                                 </button>
                                 <button type="button" onClick={() => { setView('LOGIN'); clearMsgs(); }}
                                     className="w-full flex items-center justify-center gap-2 text-sm text-gray-500 hover:text-gray-300 transition-colors">
@@ -319,8 +326,8 @@ const LoginPage = () => {
                                             placeholder="••••••••" value={newPassword} onChange={e => setNewPassword(e.target.value)} />
                                     </div>
                                 </div>
-                                <button type="submit" className="btn-primary w-full justify-center text-base py-3.5">
-                                    Reset Password <ArrowRight size={16} />
+                                <button type="submit" disabled={loading} className="btn-primary w-full justify-center text-base py-3.5 disabled:opacity-60 disabled:cursor-not-allowed">
+                                    {loading ? <><Loader2 size={16} className="animate-spin" /> Resetting...</> : <>Reset Password <ArrowRight size={16} /></>}
                                 </button>
                             </motion.form>
                         )}
@@ -337,6 +344,7 @@ const LoginPage = () => {
                 </motion.div>
             </div>
         </div>
+        </PageTransition>
     );
 };
 

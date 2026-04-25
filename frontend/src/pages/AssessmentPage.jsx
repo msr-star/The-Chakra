@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import ChakraCard from '../components/ChakraCard';
 import NeuralLoader from '../components/NeuralLoader';
+import PageTransition from '../components/PageTransition';
 import { assessmentAPI } from '../api';
 
 const AssessmentPage = () => {
@@ -10,6 +11,7 @@ const AssessmentPage = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [answers, setAnswers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [submitError, setSubmitError] = useState('');
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -42,12 +44,13 @@ const AssessmentPage = () => {
         } else {
             try {
                 setLoading(true);
+                setSubmitError('');
                 const res = await assessmentAPI.submitAssessment(newAnswers);
                 navigate('/results', { state: { result: res.data }, replace: true });
             } catch (error) {
                 console.error("Failed to submit assessment", error);
                 setLoading(false);
-                alert("Failed to submit assessment. Please check your connection and try again.");
+                setSubmitError('Failed to submit assessment. Please check your connection and try again.');
             }
         }
     };
@@ -87,6 +90,7 @@ const AssessmentPage = () => {
     }
 
     return (
+        <PageTransition>
         <div className="min-h-screen pt-32 pb-16 px-4 flex flex-col items-center justify-center relative overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-accentLight/5 via-background to-background pointer-events-none" />
 
@@ -140,6 +144,21 @@ const AssessmentPage = () => {
             </div>
 
             <div className="w-full relative min-h-[500px] z-10">
+                {/* Inline error message replacing alert() */}
+                <AnimatePresence>
+                    {submitError && (
+                        <motion.div
+                            initial={{ opacity: 0, y: -8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0 }}
+                            className="mb-6 max-w-2xl mx-auto px-5 py-4 rounded-xl text-sm text-red-300 font-medium text-center"
+                            style={{ background: 'rgba(255,68,68,0.08)', border: '1px solid rgba(255,68,68,0.2)' }}
+                        >
+                            {submitError}
+                            <button onClick={() => setSubmitError('')} className="ml-3 text-red-400 hover:text-red-300 font-bold">✕</button>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
                 {questions.map((q, index) => (
                     <div key={q.id} className={index === currentIndex ? 'block' : 'hidden'}>
                         <ChakraCard
@@ -151,6 +170,7 @@ const AssessmentPage = () => {
                 ))}
             </div>
         </div>
+        </PageTransition>
     );
 };
 

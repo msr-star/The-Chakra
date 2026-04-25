@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ExternalLink, Search, Star, BookOpen, Filter } from 'lucide-react';
+import PageTransition from '../components/PageTransition';
 
 const CAREER_PATHS = [
     { id: 'all', label: 'All Resources', emoji: '🌐', color: 'from-gray-500 to-gray-600' },
@@ -383,6 +384,7 @@ const CareerResourcesPage = () => {
     const activeCareer = CAREER_PATHS.find(c => c.id === activeTab);
 
     return (
+        <PageTransition>
         <div className="min-h-screen bg-background text-white pb-24 overflow-x-hidden">
 
             {/* ── HERO ── */}
@@ -514,6 +516,7 @@ const CareerResourcesPage = () => {
                 </motion.div>
             </div>
         </div>
+        </PageTransition>
     );
 };
 

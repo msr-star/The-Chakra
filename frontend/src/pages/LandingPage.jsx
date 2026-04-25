@@ -5,6 +5,7 @@ import { ArrowRight, Sparkles } from 'lucide-react';
 import HeroSection from '../components/HeroSection';
 import BentoGrid from '../components/BentoGrid';
 import LandingFeatures from '../components/LandingFeatures';
+import PageTransition from '../components/PageTransition';
 
 /* CTA Section at the bottom of the landing page */
 const CTASection = () => (
@@ -57,12 +58,14 @@ const CTASection = () => (
 );
 
 const LandingPage = () => (
+    <PageTransition>
     <div style={{ background: '#120803', minHeight: '100vh' }}>
         <HeroSection />
         <LandingFeatures />
         <BentoGrid />
         <CTASection />
     </div>
+    </PageTransition>
 );
 
 export default LandingPage;

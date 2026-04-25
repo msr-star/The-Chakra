@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Brain, Target, LineChart, Award, Users, BookOpen, Lightbulb, GraduationCap } from 'lucide-react';
+import PageTransition from '../components/PageTransition';
 
 const teamMembers = [
     {
@@ -53,6 +54,7 @@ const fadeUp = (delay = 0) => ({
 
 const AboutPage = () => {
     return (
+        <PageTransition>
         <div className="min-h-screen bg-background text-white overflow-x-hidden">
 
             {/* ─── HERO ─── */}
@@ -206,6 +208,7 @@ const AboutPage = () => {
             </section>
 
         </div>
+        </PageTransition>
     );
 };
 

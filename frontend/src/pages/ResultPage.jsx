@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation, Navigate, Link } from 'react-router-dom';
 import ResultDashboard from '../components/ResultDashboard';
 import { motion } from 'framer-motion';
+import PageTransition from '../components/PageTransition';
 
 const ResultPage = () => {
     const location = useLocation();
@@ -12,6 +13,7 @@ const ResultPage = () => {
     }
 
     return (
+        <PageTransition>
         <div className="min-h-screen pt-32 pb-16 px-4 flex flex-col items-center justify-center relative">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-accentWarm/5 via-background to-background pointer-events-none" />
 
@@ -47,6 +49,7 @@ const ResultPage = () => {
                 </Link>
             </motion.div>
         </div>
+        </PageTransition>
     );
 };
 

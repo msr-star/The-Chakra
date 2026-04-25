@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Zap, Linkedin, Mail, ArrowUpRight, Twitter, Github } from 'lucide-react';
+import { Zap, Linkedin, Mail, ArrowUpRight } from 'lucide-react';
 
 const Footer = () => {
     const token = localStorage.getItem('token');

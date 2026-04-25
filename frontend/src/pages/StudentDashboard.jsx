@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
 import { User, Activity, Clock, Zap, Target, BookOpen, CheckCircle, AlertCircle, GraduationCap, Compass, UserCheck, ExternalLink, Sparkles, Map, TrendingUp } from 'lucide-react';
 import { assessmentAPI, studentAPI } from '../api';
+import PageTransition from '../components/PageTransition';
 
 const StudentDashboard = () => {
     const navigate = useNavigate();
@@ -70,6 +71,7 @@ const StudentDashboard = () => {
     };
 
     return (
+        <PageTransition>
         <div className="min-h-screen pt-32 pb-16 px-4 md:px-8 max-w-7xl mx-auto relative overflow-hidden text-white" style={{ background: '#120803' }}>
             {/* Ambient Background */}
             <motion.div
@@ -399,6 +401,7 @@ const StudentDashboard = () => {
 
             </motion.div>
         </div>
+        </PageTransition>
     );
 };
 

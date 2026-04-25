@@ -7,7 +7,9 @@ const CustomCursor = () => {
     const isHoveredRef = useRef(false);
 
     useEffect(() => {
-        if ("ontouchstart" in window) return;
+        // Only show custom cursor on devices with a precise pointer (mouse)
+        const hasFineMouse = window.matchMedia('(pointer: fine)').matches;
+        if (!hasFineMouse || "ontouchstart" in window) return;
 
         let mouseX = -100;
         let mouseY = -100;

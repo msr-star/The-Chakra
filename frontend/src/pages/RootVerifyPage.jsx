@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { authAPI } from '../api';
 import { motion } from 'framer-motion';
 import { ShieldAlert, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import PageTransition from '../components/PageTransition';
 
 const RootVerifyPage = () => {
     const [searchParams] = useSearchParams();
@@ -54,6 +55,7 @@ const RootVerifyPage = () => {
     };
 
     return (
+        <PageTransition>
         <div className="min-h-screen pt-32 pb-16 px-4 flex items-center justify-center relative overflow-hidden bg-black">
             {/* High Security Aesthetic Background */}
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--color-red-900)_0%,_black_70%)] opacity-30 pointer-events-none" />
@@ -152,6 +154,7 @@ const RootVerifyPage = () => {
                 )}
             </motion.div>
         </div>
+        </PageTransition>
     );
 };
 
