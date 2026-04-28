@@ -72,10 +72,10 @@ const Navbar = () => {
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-2.5 group">
                         <div className="relative w-8 h-8 rounded-xl flex items-center justify-center overflow-hidden"
-                            style={{ background: 'linear-gradient(135deg, #7C3AFF, #00D4C8)' }}>
+                            style={{ background: 'linear-gradient(135deg, #FF5A00, #FF9D00)' }}>
                             <Zap size={16} className="text-white" fill="white" />
                             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                                style={{ background: 'linear-gradient(135deg, #00D4C8, #7C3AFF)' }} />
+                                style={{ background: 'linear-gradient(135deg, #FF9D00, #FF5A00)' }} />
                         </div>
                         <span
                             className="text-lg font-bold tracking-tight"
@@ -107,7 +107,7 @@ const Navbar = () => {
                                     <motion.div
                                         layoutId="nav-indicator"
                                         className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-4 h-0.5 rounded-full"
-                                        style={{ background: 'linear-gradient(90deg, #7C3AFF, #00D4C8)' }}
+                                        style={{ background: 'linear-gradient(90deg, #FF5A00, #FF9D00)' }}
                                     />
                                 )}
                             </Link>
@@ -120,7 +120,7 @@ const Navbar = () => {
                             <>
                                 {isAdmin ? (
                                     <Link to="/admin"
-                                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-violet-300 hover:text-violet-200 rounded-xl hover:bg-violet-500/10 transition-all">
+                                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#FF9D00] hover:text-[#FF5A00] rounded-xl hover:bg-[#FF5A00]/10 transition-all">
                                         <ShieldCheck size={15} /> Admin Panel
                                     </Link>
                                 ) : (
@@ -208,7 +208,7 @@ const Navbar = () => {
                             {isAuthenticated ? (
                                 <>
                                     {isAdmin ? (
-                                        <Link to="/admin" className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-violet-300 rounded-xl hover:bg-white/5 transition-all">
+                                        <Link to="/admin" className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-[#FF9D00] rounded-xl hover:bg-[#FF5A00]/10 transition-all">
                                             <ShieldCheck size={15} /> Admin Panel
                                         </Link>
                                     ) : (

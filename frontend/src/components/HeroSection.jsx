@@ -1,8 +1,7 @@
 import React from 'react';
-// HeroSection: no hooks needed beyond what framer-motion provides
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Sparkles, Users, Award, Target, Code } from 'lucide-react';
+import { ArrowRight, Sparkles, Users, Award, Target, Code, LayoutDashboard, ShieldCheck } from 'lucide-react';
 
 const FloatingCard = ({ style, children, delay = 0 }) => (
     <motion.div
@@ -21,6 +20,10 @@ const HeroSection = () => {
     const heroY = useTransform(scrollY, [0, 600], [0, 180]);
     const heroOpacity = useTransform(scrollY, [0, 400], [1, 0]);
 
+    const token = localStorage.getItem('token');
+    const user = (() => { try { return JSON.parse(localStorage.getItem('user')); } catch { return null; } })();
+    const isLoggedIn = !!token && !!user;
+    const isAdmin = isLoggedIn && user?.role === 'ADMIN';
 
 
     return (
@@ -150,10 +153,17 @@ const HeroSection = () => {
                     transition={{ duration: 0.7, delay: 0.65 }}
                     className="flex flex-wrap items-center justify-center gap-4 mb-14"
                 >
-                    <Link to="/register" className="btn-primary text-base px-7 py-3.5 flex items-center gap-2">
-                        Start For Free
-                        <ArrowRight size={16} />
-                    </Link>
+                    {isLoggedIn ? (
+                        <Link to={isAdmin ? '/admin' : '/student'} className="btn-primary text-base px-7 py-3.5 flex items-center gap-2">
+                            {isAdmin ? <><ShieldCheck size={16} /> Admin Panel</> : <><LayoutDashboard size={16} /> My Dashboard</>}
+                            <ArrowRight size={16} />
+                        </Link>
+                    ) : (
+                        <Link to="/register" className="btn-primary text-base px-7 py-3.5 flex items-center gap-2">
+                            Start For Free
+                            <ArrowRight size={16} />
+                        </Link>
+                    )}
                     <Link to="/assessment" className="btn-secondary text-base px-7 py-3.5">
                         Take Assessment
                     </Link>
@@ -175,7 +185,7 @@ const HeroSection = () => {
                         animate={{ y: [0, 12, 0] }}
                         transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
                         className="w-1 h-2 rounded-full"
-                        style={{ background: 'linear-gradient(180deg, #7C3AFF, #00D4C8)' }}
+                        style={{ background: 'linear-gradient(180deg, #FF5A00, #FF9D00)' }}
                     />
                 </div>
             </motion.div>

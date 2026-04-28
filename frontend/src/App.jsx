@@ -2,7 +2,6 @@ import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import CustomCursor from './components/CustomCursor';
 import Navbar from './components/Navbar';
 import ScrollToTop from './components/ScrollToTop';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -87,7 +86,6 @@ function App() {
                 <ErrorBoundary>
                     <div className="min-h-screen text-white overflow-x-hidden flex flex-col"
                         style={{ background: '#120803', fontFamily: 'Inter, sans-serif' }}>
-                        <CustomCursor />
                         <Navbar />
                         <ScrollToTop />
                         <main className="flex-grow">

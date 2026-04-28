@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authAPI } from '../api';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -109,6 +109,18 @@ const RegisterPage = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
+    // Redirect if already logged in
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const userStr = localStorage.getItem('user');
+        if (token && userStr) {
+            try {
+                const u = JSON.parse(userStr);
+                navigate(u?.role === 'ADMIN' ? '/admin' : '/student', { replace: true });
+            } catch { /* ignore */ }
+        }
+    }, [navigate]);
+
     const handleRegister = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -141,7 +153,7 @@ const RegisterPage = () => {
 
     return (
         <PageTransition>
-        <div className="min-h-screen flex" style={{ background: '#120803' }}>
+        <div className="min-h-screen flex pt-28" style={{ background: '#120803' }}>
 
             {/* Left brand panel */}
             <div className="lg:w-[45%] lg:min-h-screen">

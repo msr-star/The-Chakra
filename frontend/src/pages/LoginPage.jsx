@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authAPI } from '../api';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -105,6 +105,18 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const clearMsgs = () => { setError(''); setMessage(''); };
 
+    // Redirect if already logged in
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const userStr = localStorage.getItem('user');
+        if (token && userStr) {
+            try {
+                const u = JSON.parse(userStr);
+                navigate(u?.role === 'ADMIN' ? '/admin' : '/student', { replace: true });
+            } catch { /* ignore */ }
+        }
+    }, [navigate]);
+
     const handleStandardLogin = async (e) => {
         e.preventDefault(); clearMsgs(); setLoading(true);
         try {
@@ -162,7 +174,7 @@ const LoginPage = () => {
 
     return (
         <PageTransition>
-        <div className="min-h-screen flex pt-24 lg:pt-0"
+        <div className="min-h-screen flex pt-28"
             style={{ background: '#120803' }}>
 
             {/* Left brand panel (takes 45% on desktop) */}

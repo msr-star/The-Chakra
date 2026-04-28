@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Zap, Linkedin, Mail, ArrowUpRight } from 'lucide-react';
+import { Zap, Mail, ArrowUpRight, LayoutDashboard, ShieldCheck } from 'lucide-react';
 
 const Footer = () => {
     const token = localStorage.getItem('token');
@@ -14,10 +14,6 @@ const Footer = () => {
         ...(isStudent ? [{ to: '/resources', label: 'Career Resources' }] : []),
         ...(isStudent ? [{ to: '/student', label: 'My Dashboard' }] : []),
         ...(isAdmin ? [{ to: '/admin', label: 'Admin Dashboard' }] : []),
-        ...(!isLoggedIn ? [
-            { to: '/login', label: 'Sign In' },
-            { to: '/register', label: 'Register Free' },
-        ] : []),
     ];
 
     const companyLinks = [
@@ -36,7 +32,7 @@ const Footer = () => {
             {/* Ambient glow */}
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full pointer-events-none"
                 style={{
-                    background: 'radial-gradient(ellipse, rgba(124,58,255,0.08) 0%, transparent 70%)',
+                    background: 'radial-gradient(ellipse, rgba(255,90,0,0.08) 0%, transparent 70%)',
                     filter: 'blur(40px)',
                 }} />
 
@@ -47,7 +43,7 @@ const Footer = () => {
                     <div className="md:col-span-4">
                         <Link to="/" className="flex items-center gap-2.5 mb-5 group w-fit">
                             <div className="w-9 h-9 rounded-xl flex items-center justify-center"
-                                style={{ background: 'linear-gradient(135deg, #7C3AFF, #00D4C8)' }}>
+                                style={{ background: 'linear-gradient(135deg, #FF5A00, #FF9D00)' }}>
                                 <Zap size={17} className="text-white" fill="white" />
                             </div>
                             <span className="text-xl font-bold"
@@ -66,15 +62,11 @@ const Footer = () => {
                             A career assessment platform helping students discover their strengths, personality traits, and ideal career paths through intelligent assessments.
                         </p>
 
-                        {/* Social icons */}
+                        {/* Social icons — LinkedIn removed, only email */}
                         <div className="flex gap-3">
-                            <a href="https://www.linkedin.com/in/m-sai-sri-rohit-aa698a367/"
-                                target="_blank" rel="noopener noreferrer"
-                                className="w-9 h-9 rounded-xl flex items-center justify-center text-gray-400 hover:text-white border border-white/8 hover:border-violet-500/40 hover:bg-violet-500/10 transition-all duration-200">
-                                <Linkedin size={16} />
-                            </a>
                             <a href="mailto:msrohit2007@gmail.com"
-                                className="w-9 h-9 rounded-xl flex items-center justify-center text-gray-400 hover:text-white border border-white/8 hover:border-cyan-500/40 hover:bg-cyan-500/10 transition-all duration-200">
+                                className="w-9 h-9 rounded-xl flex items-center justify-center text-gray-400 hover:text-white border border-white/8 hover:border-[#FF5A00]/40 hover:bg-[#FF5A00]/10 transition-all duration-200"
+                                title="Send Email">
                                 <Mail size={16} />
                             </a>
                         </div>
@@ -137,12 +129,21 @@ const Footer = () => {
                                 msrohit2007@gmail.com
                             </a>
                             <div className="mt-4">
-                                <Link to="/register"
-                                    className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-xl text-white transition-all"
-                                    style={{ background: 'linear-gradient(135deg, rgba(124,58,255,0.25), rgba(0,212,200,0.15))', border: '1px solid rgba(124,58,255,0.3)' }}>
-                                    Get Started Free
-                                    <ArrowUpRight size={14} />
-                                </Link>
+                                {isLoggedIn ? (
+                                    <Link to={isAdmin ? '/admin' : '/student'}
+                                        className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-xl text-white transition-all"
+                                        style={{ background: 'linear-gradient(135deg, rgba(255,90,0,0.25), rgba(255,157,0,0.15))', border: '1px solid rgba(255,90,0,0.3)' }}>
+                                        {isAdmin ? <><ShieldCheck size={14} /> Admin Panel</> : <><LayoutDashboard size={14} /> My Dashboard</>}
+                                        <ArrowUpRight size={14} />
+                                    </Link>
+                                ) : (
+                                    <Link to="/register"
+                                        className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-xl text-white transition-all"
+                                        style={{ background: 'linear-gradient(135deg, rgba(255,90,0,0.25), rgba(255,157,0,0.15))', border: '1px solid rgba(255,90,0,0.3)' }}>
+                                        Get Started Free
+                                        <ArrowUpRight size={14} />
+                                    </Link>
+                                )}
                             </div>
                         </div>
                     </div>

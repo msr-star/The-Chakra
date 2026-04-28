@@ -14,12 +14,78 @@ const careerMapping = {
     'Detail': ['Data Scientist', 'Machine Learning Engineer', 'Security Analyst'],
 };
 
+// ── ChakraAI Question Bank: unique questions per category ──
+const AI_QUESTION_BANK = {
+    Logic: [
+        { text: 'Which approach best solves a complex algorithmic problem?', options: [{ text: 'Break it into smaller sub-problems', score: '5' }, { text: 'Trial and error without planning', score: '1' }, { text: 'Copy a similar solution without understanding', score: '0' }, { text: 'Analyze constraints, then design step-by-step', score: '4' }] },
+        { text: 'When debugging a critical system failure, what is your first step?', options: [{ text: 'Reproduce the issue in isolation', score: '5' }, { text: 'Restart everything and hope it fixes', score: '1' }, { text: 'Check recent changes for root cause', score: '4' }, { text: 'Ignore it and move forward', score: '0' }] },
+        { text: 'How do you evaluate the efficiency of an algorithm?', options: [{ text: 'Time and space complexity analysis', score: '5' }, { text: 'Run it once and guess', score: '1' }, { text: 'Compare with known benchmarks', score: '4' }, { text: 'Ask a colleague', score: '2' }] },
+        { text: 'What is the best way to design a scalable backend system?', options: [{ text: 'Plan for modularity and horizontal scaling', score: '5' }, { text: 'Build everything in one monolith quickly', score: '2' }, { text: 'Use microservices where appropriate', score: '4' }, { text: 'Ignore scalability until it becomes a problem', score: '0' }] },
+    ],
+    Creativity: [
+        { text: 'When designing a new user interface, what is most important?', options: [{ text: 'Aesthetics that delight the user', score: '4' }, { text: 'Functionality over appearance always', score: '2' }, { text: 'Balance of beauty and usability', score: '5' }, { text: 'Copy what competitors have done', score: '1' }] },
+        { text: 'How do you come up with innovative product ideas?', options: [{ text: 'Observe real user pain points deeply', score: '5' }, { text: 'Brainstorm without constraints first', score: '4' }, { text: 'Stick to what has worked before', score: '1' }, { text: 'Wait for inspiration to strike', score: '2' }] },
+        { text: 'What role does prototyping play in the creative process?', options: [{ text: 'Essential for testing ideas quickly', score: '5' }, { text: 'Skip it and build final product directly', score: '0' }, { text: 'Useful only for big projects', score: '2' }, { text: 'Helps visualize before committing resources', score: '4' }] },
+        { text: 'How do you handle creative blocks?', options: [{ text: 'Seek diverse inspiration outside your field', score: '5' }, { text: 'Force yourself to produce something anyway', score: '3' }, { text: 'Take a break and reset your mind', score: '4' }, { text: 'Give up on the creative task', score: '0' }] },
+    ],
+    Empathy: [
+        { text: 'A team member is struggling with their workload. What do you do?', options: [{ text: 'Offer to help and redistribute tasks fairly', score: '5' }, { text: 'Ignore it, everyone has their own job', score: '0' }, { text: 'Report it to the manager immediately', score: '2' }, { text: 'Check in privately and support them', score: '4' }] },
+        { text: 'How do you gather feedback from users most effectively?', options: [{ text: 'Conduct interviews and observe real usage', score: '5' }, { text: 'Send a quick survey and move on', score: '2' }, { text: 'Assume you know what users want', score: '0' }, { text: 'Combine surveys, interviews, and analytics', score: '4' }] },
+        { text: 'What is the best way to handle a conflict within a team?', options: [{ text: 'Address it openly with all parties', score: '5' }, { text: 'Let it resolve itself over time', score: '1' }, { text: 'Side with the senior person always', score: '0' }, { text: 'Facilitate a structured discussion', score: '4' }] },
+        { text: 'How do you build trust with stakeholders?', options: [{ text: 'Deliver consistently and communicate proactively', score: '5' }, { text: 'Only report successes, hide failures', score: '0' }, { text: 'Promise everything, figure it out later', score: '1' }, { text: 'Set realistic expectations and meet them', score: '4' }] },
+    ],
+    Structure: [
+        { text: 'How do you approach setting up a CI/CD pipeline?', options: [{ text: 'Automate builds, tests, and deployments end-to-end', score: '5' }, { text: 'Deploy manually, pipelines are overkill', score: '0' }, { text: 'Set up basic automation and iterate', score: '4' }, { text: 'Use whatever tool the team already knows', score: '2' }] },
+        { text: 'What is the most important aspect of infrastructure reliability?', options: [{ text: 'Redundancy and failover planning', score: '5' }, { text: 'Keeping costs as low as possible', score: '2' }, { text: 'Using the latest technologies', score: '1' }, { text: 'Monitoring and alerting on key metrics', score: '4' }] },
+        { text: 'How do you ensure software quality throughout a project?', options: [{ text: 'Write tests at every stage of development', score: '5' }, { text: 'Test only at the end before release', score: '1' }, { text: 'Rely on user feedback after launch', score: '0' }, { text: 'Code reviews and automated testing', score: '4' }] },
+        { text: 'When onboarding a new system, what is your first priority?', options: [{ text: 'Understand the architecture and data flow', score: '5' }, { text: 'Start making changes immediately', score: '0' }, { text: 'Read existing documentation thoroughly', score: '4' }, { text: 'Ask teammates for a quick overview', score: '2' }] },
+    ],
+    Vision: [
+        { text: 'How do you define a compelling product vision?', options: [{ text: 'Align user needs with long-term business goals', score: '5' }, { text: 'Follow what the market leader is doing', score: '1' }, { text: 'Focus only on the next quarter', score: '2' }, { text: 'Build a 3-year roadmap with flexibility', score: '4' }] },
+        { text: 'What is the best strategy for entering a competitive market?', options: [{ text: 'Find an underserved niche and own it', score: '5' }, { text: 'Copy the leading product at a lower price', score: '1' }, { text: 'Differentiate on a unique value proposition', score: '4' }, { text: 'Wait for the market to mature', score: '0' }] },
+        { text: 'How do you prioritize features on a product roadmap?', options: [{ text: 'Impact vs. effort matrix with user value', score: '5' }, { text: 'Add whatever stakeholders request', score: '1' }, { text: 'Focus on highest user demand first', score: '4' }, { text: 'Prioritize features that are easiest to build', score: '2' }] },
+        { text: 'How do you measure the success of a product strategy?', options: [{ text: 'KPIs aligned to user outcomes and revenue', score: '5' }, { text: 'Number of features shipped', score: '1' }, { text: 'Customer retention and satisfaction scores', score: '4' }, { text: 'Number of press mentions', score: '0' }] },
+    ],
+    Detail: [
+        { text: 'How do you ensure accuracy in a large dataset?', options: [{ text: 'Validate data at every transformation step', score: '5' }, { text: 'Spot-check a few rows and assume the rest is fine', score: '1' }, { text: 'Use automated data quality checks', score: '4' }, { text: 'Trust the source system completely', score: '0' }] },
+        { text: 'What is the most critical step when building an ML model?', options: [{ text: 'Clean and understand your training data first', score: '5' }, { text: 'Pick the most complex model available', score: '1' }, { text: 'Define a clear evaluation metric upfront', score: '4' }, { text: 'Train on all available data without filtering', score: '0' }] },
+        { text: 'How do you approach security vulnerability analysis?', options: [{ text: 'Threat modeling and penetration testing', score: '5' }, { text: 'Fix issues only when they are exploited', score: '0' }, { text: 'Regular audits and dependency scanning', score: '4' }, { text: 'Rely on the framework to handle security', score: '1' }] },
+        { text: 'What is the best way to document technical systems?', options: [{ text: 'Keep docs close to code and update them with changes', score: '5' }, { text: 'Write documentation once and forget it', score: '1' }, { text: 'Use diagrams and written explanations together', score: '4' }, { text: 'Skip documentation, code is self-explanatory', score: '0' }] },
+    ],
+};
+
+// Tracks which AI questions have been used per category in this session
+const usedAIIndices = {};
+
+const getUniqueAIQuestion = (category) => {
+    const key = category.trim();
+    const bank = AI_QUESTION_BANK[key];
+    if (!bank || bank.length === 0) {
+        // Fallback for unknown categories
+        return {
+            text: `Describe your approach to a challenging ${key.toLowerCase()} problem.`,
+            options: [
+                { text: 'Analyze thoroughly before acting', score: '5' },
+                { text: 'Research similar cases first', score: '4' },
+                { text: 'Trial and error', score: '2' },
+                { text: 'Ask for help immediately', score: '1' },
+            ],
+        };
+    }
+    if (!usedAIIndices[key]) usedAIIndices[key] = [];
+    let available = bank.map((_, i) => i).filter(i => !usedAIIndices[key].includes(i));
+    if (available.length === 0) { usedAIIndices[key] = []; available = bank.map((_, i) => i); }
+    const chosen = available[Math.floor(Math.random() * available.length)];
+    usedAIIndices[key].push(chosen);
+    return bank[chosen];
+};
+
 const TabButton = ({ id, label, icon: TabIcon, activeTab, setActiveTab }) => (
     <button
         onClick={() => {
             setActiveTab(id);
         }}
-        className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${activeTab === id ? 'bg-accentLight text-background' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+        className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${activeTab === id ? 'bg-accentLight text-[#120803]' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
     >
         <TabIcon size={16} /> {label}
     </button>
@@ -34,6 +100,12 @@ const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('questions');
     const [generatingQuestion, setGeneratingQuestion] = useState(false);
     const queryClient = useQueryClient();
+
+    // ── Assignment Builder State ──
+    const [assignmentName, setAssignmentName] = useState('');
+    const [questionLimit, setQuestionLimit] = useState('');
+    const [draftQuestions, setDraftQuestions] = useState([]); // list of questions queued before saving
+    const [savingAssignment, setSavingAssignment] = useState(false);
 
     // ── Mentorship State ──
     const [taskModalStudent, setTaskModalStudent] = useState(null); // student to send task to
@@ -199,23 +271,56 @@ const AdminDashboard = () => {
 
     const handleAIGenerateQuestion = () => {
         if (!category) {
-            setMessage('Please enter a Category first (e.g., Logic) to generate a question.');
+            setMessage('Please enter a Category first (e.g., Logic, Creativity) to generate a question.');
             return;
         }
         setGeneratingQuestion(true);
-        // Simulate API call to ChakraAI Model
         setTimeout(() => {
-            setQuestionText(`Which of the following approaches is most optimal for solving a complex ${category.toLowerCase()} problem?`);
+            const generated = getUniqueAIQuestion(category);
+            setQuestionText(generated.text);
             setWeightage('1.5');
-            setOptions([
-                { text: 'Iterative refinement and testing', score: '5' },
-                { text: 'Ignoring constraints and building quickly', score: '1' },
-                { text: 'Delegating without understanding', score: '0' },
-                { text: 'Analyzing requirements thoroughly first', score: '4' }
-            ]);
+            setOptions(generated.options);
             setGeneratingQuestion(false);
-            setMessage('✨ ChakraAI generated a new question based on your category!');
-        }, 2000);
+            setMessage(`✨ ChakraAI generated a unique ${category} question! You can edit it before adding.`);
+        }, 1500);
+    };
+
+    // Add current form question to the draft queue
+    const handleAddToDraft = (e) => {
+        e.preventDefault();
+        if (!questionText.trim() || !category.trim() || !weightage) {
+            setMessage('Please fill in Question Text, Category, and Weightage.');
+            return;
+        }
+        if (questionLimit && draftQuestions.length >= parseInt(questionLimit, 10)) {
+            setMessage(`Assignment limit reached: max ${questionLimit} question(s) allowed.`);
+            return;
+        }
+        const draft = { text: questionText, category, weightage, options: [...options] };
+        setDraftQuestions(prev => [...prev, draft]);
+        setQuestionText(''); setCategory(''); setWeightage('');
+        setOptions([{ text: '', score: '' }, { text: '', score: '' }]);
+        setMessage(`✅ Question added to assignment draft (${draftQuestions.length + 1}/${questionLimit || '∞'}).`);
+    };
+
+    // Save entire assignment (all draft questions) to backend
+    const handleSaveAssignment = async () => {
+        if (draftQuestions.length === 0) { setMessage('Add at least one question to the assignment first.'); return; }
+        setSavingAssignment(true);
+        setMessage('');
+        try {
+            for (const q of draftQuestions) {
+                await createQuestionMutation.mutateAsync({ text: q.text, category: q.category, weightage: q.weightage, options: q.options });
+            }
+            setDraftQuestions([]);
+            setAssignmentName('');
+            setQuestionLimit('');
+            setMessage(`🎉 Assignment "${assignmentName || 'Untitled'}" saved with ${draftQuestions.length} question(s)!`);
+        } catch {
+            setMessage('Error saving assignment. Please try again.');
+        } finally {
+            setSavingAssignment(false);
+        }
     };
 
     const addOptionField = () => {
@@ -319,7 +424,65 @@ const AdminDashboard = () => {
                             </div>
                         )}
 
-                        <form onSubmit={handleCreateQuestion} className="space-y-6">
+                        {/* Assignment Settings */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 rounded-2xl bg-white/3 border border-white/8 mb-2">
+                            <div>
+                                <label className="block text-sm text-gray-400 mb-2">Assignment Name <span className="text-gray-600">(optional)</span></label>
+                                <input
+                                    type="text"
+                                    placeholder="e.g. Week 1 Logic Assessment"
+                                    className="w-full bg-[#1A0B05] border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-accentLight transition-colors"
+                                    value={assignmentName}
+                                    onChange={e => setAssignmentName(e.target.value)}
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm text-gray-400 mb-2">Question Limit <span className="text-gray-600">(max per assignment)</span></label>
+                                <input
+                                    type="number" min="1" max="50"
+                                    placeholder="e.g. 10  (leave blank for unlimited)"
+                                    className="w-full bg-[#1A0B05] border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-accentLight transition-colors"
+                                    value={questionLimit}
+                                    onChange={e => setQuestionLimit(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Draft Queue */}
+                        {draftQuestions.length > 0 && (
+                            <div className="p-4 rounded-2xl bg-accentLight/5 border border-accentLight/20">
+                                <div className="flex items-center justify-between mb-3">
+                                    <p className="text-sm font-semibold text-accentLight">📋 Assignment Draft — {draftQuestions.length}/{questionLimit || '∞'} question(s)</p>
+                                    <button
+                                        type="button"
+                                        onClick={handleSaveAssignment}
+                                        disabled={savingAssignment}
+                                        className="px-4 py-1.5 bg-accentLight text-[#120803] text-xs font-bold rounded-xl hover:bg-[#FF8533] transition-all disabled:opacity-50"
+                                    >
+                                        {savingAssignment ? 'Saving...' : '💾 Save Assignment'}
+                                    </button>
+                                </div>
+                                <div className="space-y-2">
+                                    {draftQuestions.map((dq, i) => (
+                                        <div key={i} className="flex items-center justify-between p-3 bg-black/30 rounded-xl border border-white/5">
+                                            <div className="flex-1 min-w-0">
+                                                <p className="text-sm text-white font-medium truncate">{i + 1}. {dq.text}</p>
+                                                <p className="text-xs text-gray-500">{dq.category} · Weight: {dq.weightage}</p>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={() => setDraftQuestions(prev => prev.filter((_, idx) => idx !== i))}
+                                                className="ml-3 p-1.5 text-red-400 hover:bg-red-500/20 rounded-lg transition-colors shrink-0"
+                                            >
+                                                <X size={14} />
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        <form onSubmit={handleAddToDraft} className="space-y-6">
                             <div>
                                 <label className="block text-sm text-gray-400 mb-2">Question Text *</label>
                                 <textarea
@@ -391,13 +554,23 @@ const AdminDashboard = () => {
                                 </button>
                             </div>
 
-                            <button
-                                type="submit"
-                                disabled={createQuestionMutation.isPending}
-                                className="w-full py-4 bg-accentWarm text-white font-bold rounded-xl hover:bg-[#FF8533] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                {createQuestionMutation.isPending ? 'Saving...' : 'Save Question'}
-                            </button>
+                            <div className="flex gap-3">
+                                <button
+                                    type="submit"
+                                    className="flex-1 py-4 bg-accentWarm text-white font-bold rounded-xl hover:bg-[#FF8533] transition-colors"
+                                >
+                                    ➕ Add to Assignment
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={async (e) => { e.preventDefault(); await handleCreateQuestion({ preventDefault: () => {} }); }}
+                                    disabled={createQuestionMutation.isPending || !questionText.trim() || !category.trim() || !weightage}
+                                    className="px-5 py-4 bg-white/5 border border-white/10 text-gray-300 font-semibold rounded-xl hover:bg-white/10 transition-colors disabled:opacity-40 text-sm"
+                                    title="Save this single question directly without adding to draft"
+                                >
+                                    {createQuestionMutation.isPending ? 'Saving...' : 'Save Single'}
+                                </button>
+                            </div>
                         </form>
                     </div>
 

@@ -81,19 +81,8 @@
   }
 
   ::selection {
-    background-color: rgba(124, 58, 255, 0.4);
+    background-color: rgba(255, 90, 0, 0.4);
     color: #fff;
-  }
-
-  a,
-  button {
-    cursor: pointer;
-  }
-
-  input,
-  textarea,
-  select {
-    cursor: text;
   }
 }
 
@@ -126,16 +115,16 @@
 .glass-card {
   backdrop-filter: blur(24px) saturate(200%);
   -webkit-backdrop-filter: blur(24px) saturate(200%);
-  background: rgba(13, 20, 40, 0.80);
-  border: 1px solid rgba(124, 58, 255, 0.15);
+  background: rgba(18, 8, 3, 0.80);
+  border: 1px solid rgba(255, 90, 0, 0.12);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .glass-strong {
   backdrop-filter: blur(40px) saturate(250%);
   -webkit-backdrop-filter: blur(40px) saturate(250%);
-  background: rgba(11, 16, 48, 0.90);
-  border: 1px solid rgba(124, 58, 255, 0.25);
+  background: rgba(18, 8, 3, 0.90);
+  border: 1px solid rgba(255, 90, 0, 0.20);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
@@ -143,8 +132,8 @@
 .glass-panel {
   backdrop-filter: blur(24px) saturate(200%);
   -webkit-backdrop-filter: blur(24px) saturate(200%);
-  background: rgba(13, 20, 40, 0.80);
-  border: 1px solid rgba(124, 58, 255, 0.15);
+  background: rgba(18, 8, 3, 0.80);
+  border: 1px solid rgba(255, 90, 0, 0.12);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
@@ -152,7 +141,7 @@
    GRADIENT UTILITIES
    ============================================================ */
 .gradient-text {
-  background: linear-gradient(135deg, #7C3AFF 0%, #00D4C8 100%);
+  background: linear-gradient(135deg, #FF5A00 0%, #FF9D00 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -175,7 +164,7 @@
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, #7C3AFF, #00D4C8);
+  background: linear-gradient(135deg, #FF5A00, #FF9D00);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -191,7 +180,7 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 0.875rem 2rem;
-  background: linear-gradient(135deg, #7C3AFF, #5B21B6);
+  background: linear-gradient(135deg, #FF5A00, #FF3D00);
   color: #fff;
   font-family: var(--font-heading);
   font-weight: 700;
@@ -200,13 +189,13 @@
   border: none;
   cursor: pointer;
   transition: all 0.25s ease;
-  box-shadow: 0 0 30px rgba(124, 58, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 30px rgba(255, 90, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 50px rgba(124, 58, 255, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  background: linear-gradient(135deg, #8B4FFF, #6D28D9);
+  box-shadow: 0 0 50px rgba(255, 90, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, #FF7026, #E03600);
 }
 
 .btn-secondary {
@@ -230,8 +219,8 @@
 .btn-secondary:hover {
   transform: translateY(-2px);
   background: rgba(255, 255, 255, 0.10);
-  border-color: rgba(124, 58, 255, 0.4);
-  box-shadow: 0 0 30px rgba(124, 58, 255, 0.15);
+  border-color: rgba(255, 90, 0, 0.4);
+  box-shadow: 0 0 30px rgba(255, 90, 0, 0.15);
 }
 
 .btn-accent {
@@ -240,8 +229,8 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 0.875rem 2rem;
-  background: linear-gradient(135deg, #00D4C8, #00A89E);
-  color: #05091A;
+  background: linear-gradient(135deg, #FF9D00, #F5A623);
+  color: #120803;
   font-family: var(--font-heading);
   font-weight: 700;
   font-size: 0.9375rem;
@@ -249,12 +238,12 @@
   border: none;
   cursor: pointer;
   transition: all 0.25s ease;
-  box-shadow: 0 0 30px rgba(0, 212, 200, 0.3);
+  box-shadow: 0 0 30px rgba(255, 157, 0, 0.3);
 }
 
 .btn-accent:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 50px rgba(0, 212, 200, 0.5);
+  box-shadow: 0 0 50px rgba(255, 157, 0, 0.5);
 }
 
 /* ============================================================
@@ -262,8 +251,8 @@
    ============================================================ */
 .input-field {
   width: 100%;
-  background: rgba(5, 9, 26, 0.7);
-  border: 1px solid rgba(124, 58, 255, 0.2);
+  background: rgba(18, 8, 3, 0.7);
+  border: 1px solid rgba(255, 90, 0, 0.2);
   border-radius: 14px;
   padding: 1rem 1.25rem;
   color: #E8EAF6;
@@ -278,26 +267,26 @@
 }
 
 .input-field:focus {
-  border-color: #7C3AFF;
-  box-shadow: 0 0 0 3px rgba(124, 58, 255, 0.15);
+  border-color: #FF5A00;
+  box-shadow: 0 0 0 3px rgba(255, 90, 0, 0.15);
 }
 
 /* ============================================================
    MESH GRADIENT BACKGROUNDS
    ============================================================ */
 .mesh-bg {
-  background-color: #05091A;
+  background-color: #120803;
   background-image:
-    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(124, 58, 255, 0.25) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 110%, rgba(0, 212, 200, 0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 60% at 50% 50%, rgba(11, 16, 48, 0.8) 0%, transparent 100%);
+    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(255, 90, 0, 0.20) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 110%, rgba(255, 157, 0, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 50% 50%, rgba(18, 8, 3, 0.8) 0%, transparent 100%);
 }
 
 .mesh-bg-alt {
-  background-color: #05091A;
+  background-color: #120803;
   background-image:
-    radial-gradient(ellipse 70% 60% at 90% 20%, rgba(124, 58, 255, 0.2) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 40% at 10% 80%, rgba(0, 212, 200, 0.15) 0%, transparent 60%);
+    radial-gradient(ellipse 70% 60% at 90% 20%, rgba(255, 90, 0, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 10% 80%, rgba(255, 157, 0, 0.10) 0%, transparent 60%);
 }
 
 /* ============================================================
@@ -430,8 +419,8 @@
 
 .hover-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 20px 60px rgba(124, 58, 255, 0.2);
-  border-color: rgba(124, 58, 255, 0.35);
+  box-shadow: 0 20px 60px rgba(255, 90, 0, 0.2);
+  border-color: rgba(255, 90, 0, 0.35);
 }
 
 /* ============================================================
@@ -462,15 +451,15 @@
 }
 
 .chip-primary {
-  background: rgba(124, 58, 255, 0.15);
-  border: 1px solid rgba(124, 58, 255, 0.3);
-  color: #B39DFF;
+  background: rgba(255, 90, 0, 0.15);
+  border: 1px solid rgba(255, 90, 0, 0.3);
+  color: #FF9D00;
 }
 
 .chip-accent {
-  background: rgba(0, 212, 200, 0.12);
-  border: 1px solid rgba(0, 212, 200, 0.3);
-  color: #00D4C8;
+  background: rgba(245, 166, 35, 0.12);
+  border: 1px solid rgba(245, 166, 35, 0.3);
+  color: #F5A623;
 }
 
 .chip-gold {
@@ -484,7 +473,7 @@
    ============================================================ */
 .divider-gradient {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(124, 58, 255, 0.4), rgba(0, 212, 200, 0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 90, 0, 0.4), rgba(255, 157, 0, 0.4), transparent);
 }
 
 /* ============================================================
@@ -497,5 +486,5 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  filter: drop-shadow(0 0 20px rgba(124, 58, 255, 0.4));
+  filter: drop-shadow(0 0 20px rgba(255, 90, 0, 0.4));
 }
