@@ -34,14 +34,6 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/verify-admin-login")
-    public ResponseEntity<AuthResponseDto> verifyAdminLogin(@RequestBody VerifyOtpRequestDto request) {
-        AuthResponseDto response = authService.verifyAdminLogin(request);
-        systemAuditService.logAction("ADMIN_LOGIN_VERIFIED", "Admin OTP Verified", request.getEmail(),
-                request.getEmail());
-        return ResponseEntity.ok(response);
-    }
-
     @PostMapping("/request-admin-access")
     public ResponseEntity<?> requestAdminAccess(@RequestBody Map<String, String> request) {
         authService.requestAdminAccess(request.get("name"), request.get("email"));
